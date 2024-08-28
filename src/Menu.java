@@ -77,6 +77,10 @@ public class Menu {
                     digrafo.listarGrauVertices();
                     System.in.read();
                     break;
+                case 3:
+                    break;    
+                default:
+                System.out.println("\n Por favor digite um número válido \n");    
             }
         }
         sc.close();
