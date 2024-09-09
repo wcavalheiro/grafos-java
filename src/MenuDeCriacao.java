@@ -23,7 +23,7 @@ public class MenuDeCriacao {
             System.out.println("3. Visualizar Grafo/Digrafo");
             System.out.println("4. Limpar Grafo/Digrafo");
             System.out.println("5. Sair");
-            System.out.print("Escolha uma opção: ");
+            System.out.print("\nEscolha uma opção: ");
             int opcao = sc.nextInt();
 
             switch (opcao) {
@@ -53,26 +53,36 @@ public class MenuDeCriacao {
     }
 
     private static void adicionarNodo() throws CaractereInvalido {
-        System.out.print("Digite o número de nodos a adicionar: ");
-        int novosNodos = sc.nextInt();
+        while(true){
+            System.out.print("Digite o número de nodos a adicionar: ");
+            int novosNodos = sc.nextInt();
 
-        if (!validarTipoCaractere(novosNodos)) {
-            throw new CaractereInvalido("Formato inválido: a entrada deve conter apenas números inteiros.");
-        } else if (novosNodos < 1) {
-            System.out.println("Deve adicionar pelo menos 1 nodo.");
-            return;
+            if(grafo.getNumNodos() == 0 && novosNodos <= 1){
+                System.out.println("\nPara inicializar o Grafo/Digrafo é necessário adicionar mais de um Nodo.");
+                break;
+            }
+
+            if (!validarTipoCaractere(novosNodos)) {
+                throw new CaractereInvalido("Formato inválido: a entrada deve conter apenas números inteiros.");
+            } else if (novosNodos < 1) {
+                System.out.println("Deve adicionar pelo menos 1 nodo.");
+                return;
+            }
+            numNodos += novosNodos;
+            grafo.setNumNodos(numNodos);
+            grafo.imprimirMatrizAdjacencia();
+            System.out.println("\nNodo adicionada com sucesso!!\n");
         }
-
-        // REVER LOGICA DE QUANTIDADE DE NODOS PARA + 1
-
-        numNodos += novosNodos;
-        grafo.setNumNodos(numNodos);
-        grafo.imprimirMatrizAdjacencia();
-        System.out.println("\nNodo adicionada com sucesso!!\n");
     }
 
     private static void adicionarArestasDinamicante() throws CaractereInvalido {
         while (true) {
+
+            if (grafo.getNumNodos() <= 1){
+                System.out.println("\nVocê possui: [" + grafo.getNumNodos() + "] nodos." + "\nÉ necessário adicionar mais Nodos antes de prosseguir com a adição de arestas.");
+                break;
+            }
+
             try{
                 System.out.print("Digite a aresta (formato: nodo1 nodo2) ou 's s' para parar: ");
                 String input1 = sc.next();
