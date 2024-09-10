@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int opcao = 0;
 
@@ -16,7 +16,7 @@ public class Main {
             System.out.println("3. Sair");
             opcao = sc.nextInt();
 
-            switch(opcao) {
+            switch (opcao) {
 
                 case 1:
                     MenuDeCriacao.criarGrafo();
@@ -42,14 +42,10 @@ public class Main {
                     System.out.println("\n --------------------------------------------- \n");
                     break;
                 default:
-                System.out.println("\n Por favor digite um número válido \n");    
+                    System.out.println("\n Por favor digite um número válido \n");
 
             }
         }
         sc.close();
     }
 }
-
-
-
-

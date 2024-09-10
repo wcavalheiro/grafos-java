@@ -1,6 +1,5 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class MenuDeCriacao {
 
@@ -22,9 +21,11 @@ public class MenuDeCriacao {
 
             System.out.println("1. Adicionar Nodo");
             System.out.println("2. Adicionar Aresta");
-            System.out.println("3. Visualizar Grafo/Digrafo");
-            System.out.println("4. Limpar Grafo/Digrafo");
-            System.out.println("5. Sair");
+            System.out.println("3. Remover Aresta");
+            System.out.println("4. Remover Vértice");
+            System.out.println("5. Visualizar Grafo/Digrafo");
+            System.out.println("6. Limpar Grafo/Digrafo");
+            System.out.println("7. Sair");
             System.out.print("\nEscolha uma opção: ");
             int opcao = sc.nextInt();
 
@@ -33,18 +34,24 @@ public class MenuDeCriacao {
                     adicionarNodo();
                     break;
                 case 2:
-                    adicionarArestasDinamicante();
+                    adicionarArestasDinamicamente();
                     break;
                 case 3:
+                    removerAresta();
+                    break;
+                case 4:
+                    removerVertice();
+                    break;
+                case 5:
                     grafo.imprimirMatrizAdjacencia();
                     grafo.listarGrauVertices();
                     break;
-                case 4:
+                case 6:
                     grafo.setNumNodos(0);
                     numNodos = 0;
                     System.out.println("\nGrafo/Digrafo foi limpo.");
                     break;
-                case 5:
+                case 7:
                     running = false;
                     System.out.println("\nEncerrando...");
                     break;
@@ -54,7 +61,7 @@ public class MenuDeCriacao {
         }
     }
 
-    public static void adicionarNodo(){
+    public static void adicionarNodo() {
         while (true) {
             try {
                 System.out.print("Digite o número de nodos a adicionar: ");
@@ -82,11 +89,11 @@ public class MenuDeCriacao {
         }
     }
 
-
-    private static void adicionarArestasDinamicante(){
+    private static void adicionarArestasDinamicamente() {
         while (true) {
             if (grafo.getNumNodos() <= 1) {
-                System.out.println("\nVocê possui: [" + grafo.getNumNodos() + "] nodos." + "\nÉ necessário adicionar mais Nodos antes de prosseguir com a adição de arestas.");
+                System.out.println("\nVocê possui: [" + grafo.getNumNodos() + "] nodos."
+                        + "\nÉ necessário adicionar mais Nodos antes de prosseguir com a adição de arestas.");
                 break;
             }
 
@@ -104,6 +111,56 @@ public class MenuDeCriacao {
                 int nodo2 = Integer.parseInt(input2);
                 grafo.adicionarAresta(nodo1, nodo2);
                 System.out.println("Aresta adicionada com sucesso.");
+
+            } catch (NumberFormatException e) {
+                System.out.println(MENSAGEM_FORMATO_INVALIDO);
+            }
+        }
+    }
+
+    private static void removerAresta() {
+        while (true) {
+            if (grafo.getNumNodos() <= 1) {
+                System.out.println("\nVocê possui: [" + grafo.getNumNodos() + "] nodos."
+                        + "\nNão é possível remover arestas com menos de dois nodos.");
+                break;
+            }
+
+            System.out.print("Digite a aresta a ser removida (formato: nodo1 nodo2) ou 's s' para parar: ");
+            String input1 = sc.next();
+            String input2 = sc.next();
+
+            if (input1.equalsIgnoreCase("s") || input2.equalsIgnoreCase("s")) {
+                System.out.println("\nParando a remoção de arestas...\n");
+                break;
+            }
+
+            try {
+                int nodo1 = Integer.parseInt(input1);
+                int nodo2 = Integer.parseInt(input2);
+                grafo.removerAresta(nodo1, nodo2);
+                System.out.println("Aresta removida com sucesso.");
+
+            } catch (NumberFormatException e) {
+                System.out.println(MENSAGEM_FORMATO_INVALIDO);
+            }
+        }
+    }
+
+    private static void removerVertice() {
+        while (true) {
+            System.out.print("Digite o número do vértice a ser removido ou 's' para parar: ");
+            String input = sc.next();
+
+            if (input.equalsIgnoreCase("s")) {
+                System.out.println("\nParando a remoção de vértices...\n");
+                break;
+            }
+
+            try {
+                int nodo = Integer.parseInt(input);
+                grafo.removerVertice(nodo);
+                grafo.imprimirMatrizAdjacencia();
 
             } catch (NumberFormatException e) {
                 System.out.println(MENSAGEM_FORMATO_INVALIDO);
@@ -132,36 +189,5 @@ public class MenuDeCriacao {
                 sc.nextLine();
             }
         } while (true);
-    }
-
-    private static void exibirMensagemTemporaria(String mensagem) {
-        try {
-            System.out.println(mensagem);
-
-            Thread.sleep(2000);
-
-            limparConsole();
-        } catch (InterruptedException e) {
-            System.err.println("Erro ao pausar a execução: " + e.getMessage());
-        }
-    }
-
-    private static void limparConsole() {
-        String sistemaOperacional = System.getProperty("os.name");
-
-        try {
-            if (sistemaOperacional.contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            }
-        } catch (Exception e) {
-            System.err.println("\nErro ao limpar o console: " + e.getMessage());
-        }
-    }
-
-    public static <T> boolean validarTipoCaractere(T valor) {
-        String regex = "^\\d+$";
-        String valorStr = String.valueOf(valor);
-
-        return Pattern.matches(regex, valorStr);
     }
 }
