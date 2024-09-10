@@ -1,34 +1,18 @@
-
-import excecoes.CaractereInvalido;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class MenuDeCriacao {
 
-
-
     private static final String MENSAGEM_FORMATO_INVALIDO = "\nFormato inválido: a entrada deve conter apenas números inteiros.\n";
-
 
     private static final Scanner sc = new Scanner(System.in);
     private static Grafo grafo;
     private static int numNodos = 0;
 
-
-    public static void setGrafo(Grafo g) {
-        grafo = g;
-        numNodos = g.getNumNodos();
-    }
-
-    public static void criarGrafo() throws CaractereInvalido {
-        System.out.print("O grafo é direcionado? (true/false): ");
-        boolean direcionado = sc.nextBoolean();
-
     public static void criarGrafo() {
 
         boolean direcionado = verificarGrafoDirecionado();
-
 
         grafo = new Grafo(numNodos, direcionado);
 
@@ -58,49 +42,6 @@ public class MenuDeCriacao {
                 case 4:
                     grafo.setNumNodos(0);
                     numNodos = 0;
-
-                    System.out.println("\nGrafo/Digrafo limpo...\n");
-                    break;
-                case 5:
-                    running = false;
-                    System.out.println("Encerrando...");
-                    break;
-                default:
-                    System.out.println("Opção inválida.");
-            }
-        }
-    }
-
-    private static void adicionarNodo() throws CaractereInvalido {
-        while (true) {
-            System.out.print("Digite o número de nodos a adicionar: ");
-            int novosNodos = sc.nextInt();
-
-            if (grafo.getNumNodos() == 0 && novosNodos <= 1) {
-                System.out.println("\nPara inicializar o Grafo/Digrafo é necessário adicionar mais de um Nodo.");
-                break;
-            }
-
-            if (!validarTipoCaractere(novosNodos)) {
-                throw new CaractereInvalido("Formato inválido: a entrada deve conter apenas números inteiros.");
-            } else if (novosNodos < 1) {
-                System.out.println("Deve adicionar pelo menos 1 nodo.");
-                return;
-            }
-            numNodos += novosNodos;
-            grafo.setNumNodos(numNodos);
-            grafo.imprimirMatrizAdjacencia();
-            System.out.println("\nNodo(s) adicionado(s) com sucesso!!\n");
-        }
-    }
-
-    private static void adicionarArestasDinamicante() throws CaractereInvalido {
-        while (true) {
-
-            if (grafo.getNumNodos() <= 1) {
-                System.out.println("\nVocê possui: [" + grafo.getNumNodos() + "] nodos."
-                        + "\nÉ necessário adicionar mais Nodos antes de prosseguir com a adição de arestas.");
-
                     System.out.println("\nGrafo/Digrafo foi limpo.");
                     break;
                 case 5:
@@ -155,31 +96,10 @@ public class MenuDeCriacao {
 
             if (input1.equalsIgnoreCase("s") || input2.equalsIgnoreCase("s")) {
                 System.out.println("\nParando a inserção de arestas...\n");
-
                 break;
             }
 
             try {
-
-                System.out.print("Digite a aresta (formato: nodo1 nodo2) ou 's s' para parar: ");
-                String input1 = sc.next();
-                String input2 = sc.next();
-
-                if (input1.equalsIgnoreCase("s") || input2.equalsIgnoreCase("s")) {
-                    System.out.println("\nParando a inserção de arestas...\n");
-                    break;
-                }
-
-                if (!validarTipoCaractere(input1) || !validarTipoCaractere(input2)) {
-                    throw new CaractereInvalido("Formato inválido: a entrada deve conter apenas números inteiros.");
-                }
-
-                grafo.adicionarAresta(Integer.parseInt(input1), Integer.parseInt(input2));
-                System.out.println("Aresta adicionada com sucesso.");
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println(e.getMessage());
-            }
-
                 int nodo1 = Integer.parseInt(input1);
                 int nodo2 = Integer.parseInt(input2);
                 grafo.adicionarAresta(nodo1, nodo2);
@@ -235,7 +155,6 @@ public class MenuDeCriacao {
             }
         } catch (Exception e) {
             System.err.println("\nErro ao limpar o console: " + e.getMessage());
-
         }
     }
 
