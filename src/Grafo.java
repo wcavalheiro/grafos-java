@@ -1,4 +1,5 @@
 class Grafo {
+
     private int[][] matrizAdjacencia;
     private int numNodos;
     private boolean direcionado;
@@ -45,5 +46,43 @@ class Grafo {
                 System.out.println("Vértice " + (i + 1) + " - Grau: " + grauSaida);
             }
         }
+    }
+
+    public int[][] getMatrizAdjacencia() {
+        return matrizAdjacencia;
+    }
+
+    public void setMatrizAdjacencia(int[][] matrizAdjacencia) {
+        this.matrizAdjacencia = matrizAdjacencia;
+    }
+
+    public int getNumNodos() {
+        return numNodos;
+    }
+
+    public void setNumNodos(int novosNodos) {
+        if (novosNodos != numNodos) {
+            // Cria uma nova matriz de adjacência com o tamanho atualizado
+            int[][] novaMatriz = new int[novosNodos][novosNodos];
+
+            // Copia os dados da matriz antiga para a nova matriz
+            for (int i = 0; i < Math.min(numNodos, novosNodos); i++) {
+                for (int j = 0; j < Math.min(numNodos, novosNodos); j++) {
+                    novaMatriz[i][j] = matrizAdjacencia[i][j];
+                }
+            }
+
+            // Atualiza a matriz de adjacência e o número de nós
+            matrizAdjacencia = novaMatriz;
+            numNodos = novosNodos;
+        }
+    }
+
+    public boolean isDirecionado() {
+        return direcionado;
+    }
+
+    public void setDirecionado(boolean direcionado) {
+        this.direcionado = direcionado;
     }
 }
