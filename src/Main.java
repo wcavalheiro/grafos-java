@@ -8,7 +8,9 @@ public class Main {
 
         while (opcao != 3) {
             System.out.println(" --------------------------------------------- ");
+            System.out.println(" --------------------------------------------- ");
             System.out.println(" -------------- MENU DE CRIAÇÃO -------------- ");
+            System.out.println(" --------------------------------------------- \n");
             System.out.println(" --------------------------------------------- \n");
             System.out.println(" -------- Escolha a opcao entre 1 a 3 -------- \n");
             System.out.println("1. Criar um Grafo/Digrafo manualmente");
@@ -29,17 +31,21 @@ public class Main {
 
                     if (grafoDoArquivo != null) {
                         grafoDoArquivo.imprimirMatrizAdjacencia();
-                        grafoDoArquivo.listarGrauVertices();
+                        grafoDoArquivo.listarGrauNodos();
                     } else {
                         System.out.println("Erro ao carregar o grafo a partir do arquivo.");
                     }
                     break;
                 case 3:
-                    System.out.println("\n --------------------------------------------- \n");
-                    System.out.println("\n --------------------------------------------- \n");
-                    System.out.println("\n ------ OBRIGADO POR USAR NOSSO SISTEMA ------ \n");
-                    System.out.println("\n --------------------------------------------- \n");
-                    System.out.println("\n --------------------------------------------- \n");
+                    System.out.println("\n\n --------------------------------------------- \n\n");
+                    System.out.println("##     ## ##     ## #### ########  #######        #######  ########  ########  ####  ######      ###    ########   #######  \r\n" + //
+                                       "###   ### ##     ##  ##     ##    ##     ##      ##     ## ##     ## ##     ##  ##  ##    ##    ## ##   ##     ## ##     ## \r\n" + //
+                                       "#### #### ##     ##  ##     ##    ##     ##      ##     ## ##     ## ##     ##  ##  ##         ##   ##  ##     ## ##     ## \r\n" + //
+                                       "## ### ## ##     ##  ##     ##    ##     ##      ##     ## ########  ########   ##  ##   #### ##     ## ##     ## ##     ## \r\n" + //
+                                       "##     ## ##     ##  ##     ##    ##     ##      ##     ## ##     ## ##   ##    ##  ##    ##  ######### ##     ## ##     ## \r\n" + //
+                                       "##     ## ##     ##  ##     ##    ##     ##      ##     ## ##     ## ##    ##   ##  ##    ##  ##     ## ##     ## ##     ## \r\n" + //
+                                       "##     ##  #######  ####    ##     #######        #######  ########  ##     ## ####  ######   ##     ## ########   #######   \n");
+                    System.out.println("\n\n --------------------------------------------- \n\n");
                     break;
                 default:
                     System.out.println("\n Por favor digite um número válido \n");

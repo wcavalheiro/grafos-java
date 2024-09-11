@@ -33,7 +33,7 @@ class Grafo {
         }
     }
 
-    public void removerVertice(int nodo) {
+    public void removerNodo(int nodo) {
         if (nodo <= numNodos) {
             int[][] novaMatriz = new int[numNodos - 1][numNodos - 1];
 
@@ -51,9 +51,9 @@ class Grafo {
 
             matrizAdjacencia = novaMatriz;
             numNodos--;
-            System.out.println("Vértice removido com sucesso.");
+            System.out.println("Nodo removido com sucesso.");
         } else {
-            System.out.println("Vértice inválido.");
+            System.out.println("Nodo inválido.");
         }
     }
 
@@ -67,7 +67,7 @@ class Grafo {
         }
     }
 
-    public void listarGrauVertices() {
+    public void listarGrauNodos() {
         for (int i = 0; i < numNodos; i++) {
             int grauEntrada = 0;
             int grauSaida = 0;
@@ -79,9 +79,9 @@ class Grafo {
 
             if (direcionado) {
                 System.out.println(
-                        "Vértice " + (i + 1) + " - Grau de Entrada: " + grauEntrada + ", Grau de Saída: " + grauSaida);
+                        "Nodo " + (i + 1) + " - Grau de Entrada: " + grauEntrada + ", Grau de Saída: " + grauSaida);
             } else {
-                System.out.println("Vértice " + (i + 1) + " - Grau: " + grauSaida);
+                System.out.println("Nodo " + (i + 1) + " - Grau: " + grauSaida);
             }
         }
     }

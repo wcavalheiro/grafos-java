@@ -21,8 +21,8 @@ public class MenuDeCriacao {
 
             System.out.println("1. Adicionar Nodo");
             System.out.println("2. Adicionar Aresta");
-            System.out.println("3. Remover Aresta");
-            System.out.println("4. Remover Vértice");
+            System.out.println("3. Remover Nodo");
+            System.out.println("4. Remover Aresta");
             System.out.println("5. Visualizar Grafo/Digrafo");
             System.out.println("6. Limpar Grafo/Digrafo");
             System.out.println("7. Sair");
@@ -37,21 +37,25 @@ public class MenuDeCriacao {
                     adicionarArestasDinamicamente();
                     break;
                 case 3:
-                    removerAresta();
+                    removerNodo();
                     break;
                 case 4:
-                    removerVertice();
+                    removerAresta();
                     break;
                 case 5:
+                    if(grafo.getNumNodos() == 0) { 
+                        System.out.println("\nO Grafo non ecxiste");                   
+                        break;
+                    }
                     grafo.imprimirMatrizAdjacencia();
-                    grafo.listarGrauVertices();
+                    grafo.listarGrauNodos();
                     break;
                 case 6:
-                    grafo.setNumNodos(0);
-                    numNodos = 0;
+                    limparGrafo();
                     System.out.println("\nGrafo/Digrafo foi limpo.");
                     break;
                 case 7:
+                    limparGrafo();
                     running = false;
                     System.out.println("\nEncerrando...");
                     break;
@@ -76,7 +80,6 @@ public class MenuDeCriacao {
                     System.out.println("\nVocê deve adicionar pelo menos 1 nodo.");
                     continue;
                 }
-
                 numNodos += novosNodos;
                 grafo.setNumNodos(numNodos);
                 grafo.imprimirMatrizAdjacencia();
@@ -97,11 +100,11 @@ public class MenuDeCriacao {
                 break;
             }
 
-            System.out.print("Digite a aresta (formato: nodo1 nodo2) ou 's s' para parar: ");
+            System.out.print("Digite a aresta (formato: nodo1 nodo2) ou 'x x' para parar: ");
             String input1 = sc.next();
             String input2 = sc.next();
 
-            if (input1.equalsIgnoreCase("s") || input2.equalsIgnoreCase("s")) {
+            if (input1.equalsIgnoreCase("x") || input2.equalsIgnoreCase("x")) {
                 System.out.println("\nParando a inserção de arestas...\n");
                 break;
             }
@@ -126,11 +129,11 @@ public class MenuDeCriacao {
                 break;
             }
 
-            System.out.print("Digite a aresta a ser removida (formato: nodo1 nodo2) ou 's s' para parar: ");
+            System.out.print("Digite a aresta a ser removida (formato: nodo1 nodo2) ou 'x x' para parar: ");
             String input1 = sc.next();
             String input2 = sc.next();
 
-            if (input1.equalsIgnoreCase("s") || input2.equalsIgnoreCase("s")) {
+            if (input1.equalsIgnoreCase("x") || input2.equalsIgnoreCase("x")) {
                 System.out.println("\nParando a remoção de arestas...\n");
                 break;
             }
@@ -147,19 +150,19 @@ public class MenuDeCriacao {
         }
     }
 
-    private static void removerVertice() {
+    private static void removerNodo() {
         while (true) {
-            System.out.print("Digite o número do vértice a ser removido ou 's' para parar: ");
+            System.out.print("Digite o número do nodo a ser removido ou 'x' para parar: ");
             String input = sc.next();
 
-            if (input.equalsIgnoreCase("s")) {
-                System.out.println("\nParando a remoção de vértices...\n");
+            if (input.equalsIgnoreCase("x")) {
+                System.out.println("\nParando a remoção de nodos...\n");
                 break;
             }
 
             try {
                 int nodo = Integer.parseInt(input);
-                grafo.removerVertice(nodo);
+                grafo.removerNodo(nodo);
                 grafo.imprimirMatrizAdjacencia();
 
             } catch (NumberFormatException e) {
@@ -173,7 +176,7 @@ public class MenuDeCriacao {
 
         do {
             try {
-                System.out.print("O grafo é direcionado? 1 - [TRUE] | 2 - [FALSE]: ");
+                System.out.print("O grafo é direcionado? 1 - [DIRECIONADO] | 2 - [NÃO DIRECIONADO]: ");
                 direcionadoOpcao = sc.nextInt();
 
                 switch (direcionadoOpcao) {
@@ -182,12 +185,17 @@ public class MenuDeCriacao {
                     case 2:
                         return false;
                     default:
-                        System.out.println("\nOpção inválida. Digite 1 para [TRUE] ou 2 para [FALSE].\n");
+                        System.out.println("\nOpção inválida. Digite 1 para [DIRECIONADO] ou 2 para [NÃO DIRECIONADO].\n");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida! Por favor, insira 1 ou 2.");
                 sc.nextLine();
             }
         } while (true);
+    }
+
+    public static void limparGrafo() {
+        grafo.setNumNodos(0);
+        numNodos = 0;
     }
 }
