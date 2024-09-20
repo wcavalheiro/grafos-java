@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Astro {
+public class PontoDeSalto {
     private String nome;
     private double fatorDeSeguranca;
 

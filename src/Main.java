@@ -21,7 +21,7 @@ public class Main {
             switch (opcao) {
 
                 case 1:
-                    MenuDeCriacao.criarGrafo();
+                    MenuDeCriacaoProblema.criarGrafo();
                     break;
                 case 2:
                     System.out.print("Digite o caminho do arquivo .txt: ");

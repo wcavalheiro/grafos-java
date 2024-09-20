@@ -10,4 +10,6 @@ import lombok.NoArgsConstructor;
 public class Caminho {
     private double parsec;
     private double custoCombustivel;
+    private PontoDeSalto pontoInicial;
+    private PontoDeSalto pontoFinal;
 }

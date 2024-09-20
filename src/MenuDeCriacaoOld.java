@@ -1,7 +1,7 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class MenuDeCriacao {
+public class MenuDeCriacaoOld {
 
     private static final String MENSAGEM_FORMATO_INVALIDO = "\nFormato inválido: a entrada deve conter apenas números inteiros.\n";
 
@@ -44,7 +44,7 @@ public class MenuDeCriacao {
                     break;
                 case 5:
                     if(grafo.getNumNodos() == 0) { 
-                        System.out.println("\nO Grafo non ecxiste");                   
+                        System.out.println("\nO Grafo non ecxiste");
                         break;
                     }
                     grafo.imprimirMatrizAdjacencia();
