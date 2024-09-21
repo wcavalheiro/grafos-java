@@ -112,7 +112,7 @@ public class MenuDeCriacaoOld {
             try {
                 int nodo1 = Integer.parseInt(input1);
                 int nodo2 = Integer.parseInt(input2);
-                grafo.adicionarAresta(nodo1, nodo2);
+                grafo.adicionarAresta(nodo1, nodo2, 2);
                 System.out.println("Aresta adicionada com sucesso.");
 
             } catch (NumberFormatException e) {

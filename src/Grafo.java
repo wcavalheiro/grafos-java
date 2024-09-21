@@ -10,11 +10,22 @@ class Grafo {
         matrizAdjacencia = new int[numNodos][numNodos];
     }
 
-    public void adicionarAresta(int nodo1, int nodo2) {
+    /*public void adicionarAresta(int nodo1, int nodo2) {
         if (nodo1 <= numNodos && nodo2 <= numNodos) {
             matrizAdjacencia[nodo1 - 1][nodo2 - 1] = 1;
             if (!direcionado) {
                 matrizAdjacencia[nodo2 - 1][nodo1 - 1] = 1;
+            }
+        } else {
+            System.out.println("Nodos inválidos.");
+        }
+    }*/
+
+    public void adicionarAresta(int nodo1, int nodo2, int peso) {
+        if (nodo1 <= numNodos && nodo2 <= numNodos) {
+            matrizAdjacencia[nodo1 - 1][nodo2 - 1] = peso;
+            if (!direcionado) {
+                matrizAdjacencia[nodo2 - 1][nodo1 - 1] = peso;
             }
         } else {
             System.out.println("Nodos inválidos.");
@@ -58,7 +69,7 @@ class Grafo {
     }
 
     public void imprimirMatrizAdjacencia() {
-        System.out.println("Matriz de Adjacência:");
+        System.out.println("\nMatriz de Adjacência:");
         for (int i = 0; i < numNodos; i++) {
             for (int j = 0; j < numNodos; j++) {
                 System.out.print(matrizAdjacencia[i][j] + " ");

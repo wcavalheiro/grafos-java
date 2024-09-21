@@ -20,7 +20,7 @@ public class LeitorArquivo {
                     int nodo1 = Integer.parseInt(partes[0]);
                     int nodo2 = Integer.parseInt(partes[1]);
 
-                    grafo.adicionarAresta(nodo1, nodo2);
+                    grafo.adicionarAresta(nodo1, nodo2, 2);
                 } else {
                     System.out.println("Formato de linha inválido: " + line);
                 }

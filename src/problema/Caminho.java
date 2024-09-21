@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Caminho {
-    private double parsec;
-    private double custoCombustivel;
-    private PontoDeSalto pontoInicial;
-    private PontoDeSalto pontoFinal;
+    private int parsec;
+    private int pontoInicial;
+    private int pontoFinal;
 }
