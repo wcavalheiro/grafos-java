@@ -9,12 +9,12 @@ public class Main {
         while (opcao != 3) {
             System.out.println(" --------------------------------------------- ");
             System.out.println(" --------------------------------------------- ");
-            System.out.println(" -------------- MENU DE CRIAÇÃO -------------- ");
+            System.out.println(" -------------- MENU DE INICIAL -------------- ");
             System.out.println(" --------------------------------------------- \n");
             System.out.println(" --------------------------------------------- \n");
             System.out.println(" -------- Escolha a opcao entre 1 a 3 -------- \n");
-            System.out.println("1. Criar um Grafo/Digrafo manualmente");
-            System.out.println("2. Criar um Grafo/Digrafo a partir de um arquivo .txt");
+            System.out.println("1. Crie sua rota espacial");
+            System.out.println("2. Criar sua rota espacial a partir de um arquivo .txt");
             System.out.println("3. Sair");
             opcao = sc.nextInt();
 
