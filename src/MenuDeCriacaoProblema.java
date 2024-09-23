@@ -26,63 +26,70 @@ public class MenuDeCriacaoProblema {
     public static void criarGrafo() {
 
         boolean direcionado = false;
-
         grafo = new Grafo(numNodos, direcionado);
 
         boolean running = true;
         while (running) {
             System.out.println("\nMenu:");
 
-            System.out.println("1. Adicionar Ponto de Salto");
-            System.out.println("2. Adicionar Caminho");
-            System.out.println("3. Atualizar Ponto de Salto");
-            System.out.println("4. Atualizar Caminho");
-            System.out.println("5. Remover Ponto de Salto");
-            System.out.println("6. Remover Caminho");
-            System.out.println("7. Visualizar Pontos de Salto");
-            System.out.println("8. Visualizar Caminhos");
-            System.out.println("9. Visualizar Melhor Caminho");
-            System.out.println("10. Limpar Rota");
-            System.out.println("11. Sair");
+            System.out.println("1. Adicionar problema por arquivo .txt");
+            System.out.println("2. Adicionar Ponto de Salto");
+            System.out.println("3. Adicionar Caminho");
+            System.out.println("4. Atualizar Ponto de Salto");
+            System.out.println("5. Atualizar Caminho");
+            System.out.println("6. Remover Ponto de Salto");
+            System.out.println("7. Remover Caminho");
+            System.out.println("8. Visualizar Pontos de Salto");
+            System.out.println("9. Visualizar Caminhos");
+            System.out.println("10. Visualizar Dados do Grafo"); // Nova opção adicionada
+            System.out.println("11. Visualizar Melhor Caminho");
+            System.out.println("12. Limpar Rota");
+            System.out.println("13. Sair");
 
             System.out.print("\nEscolha uma opção: ");
             int opcao = sc.nextInt();
 
             switch (opcao) {
                 case 1:
-                    adicionarPontoDeSaltoDinamicamente();
+                    //adicionarProblemaPorArquivo(); // Implementar método para adicionar problema via arquivo .txt
                     break;
                 case 2:
-                    adicionarCaminhosDinamicamente();
+                    adicionarPontoDeSaltoDinamicamente();
                     break;
                 case 3:
-                    //atualizarPontoDeSalto();
+                    adicionarCaminhosDinamicamente();
                     break;
                 case 4:
-                    //atualizarCaminho();
+                    // atualizarPontoDeSalto(); // Implementar método para atualizar ponto de salto
                     break;
                 case 5:
-                    removerNodo();
+                    // atualizarCaminho(); // Implementar método para atualizar caminho
                     break;
                 case 6:
-                    removerAresta();
+                    removerNodo();
                     break;
                 case 7:
+                    removerAresta();
+                    break;
+                case 8:
                     listarPontosDeSalto();
                     grafo.imprimirMatrizAdjacencia();
                     grafo.listarGrauNodos();
                     break;
-                case 8:
-                    //listarCaminhos();
-                    break;
                 case 9:
-                    visualizarMelhorCaminho();
+                    // listarCaminhos(); // Implementar método para visualizar caminhos
                     break;
                 case 10:
+                    //visualizarDadosDoGrafo(); // Nova opção para visualizar dados gerais do grafo
+                    break;
+                case 11:
+                    visualizarMelhorCaminho(); // Método para visualizar o melhor caminho
+                    break;
+                case 12:
                     limparGrafo();
                     System.out.println("\nGrafo/Digrafo foi limpo.");
                     break;
-                case 11:
+                case 13:
                     limparGrafo();
                     running = false;
                     System.out.println("\nEncerrando...");
@@ -92,6 +99,7 @@ public class MenuDeCriacaoProblema {
             }
         }
     }
+
 
     public static void adicionarPontoDeSaltoDinamicamente() {
         String nome;
