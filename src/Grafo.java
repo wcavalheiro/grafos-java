@@ -87,15 +87,18 @@ class Grafo {
             int grauSaida = 0;
 
             for (int j = 0; j < numNodos; j++) {
-                grauSaida += matrizAdjacencia[i][j];
-                grauEntrada += matrizAdjacencia[j][i];
+                if (matrizAdjacencia[i][j] != 0) {
+                    grauSaida++; // Conta as arestas saindo do nodo i
+                }
+                if (matrizAdjacencia[j][i] != 0) {
+                    grauEntrada++; // Conta as arestas chegando ao nodo i
+                }
             }
 
             if (direcionado) {
-                System.out.println(
-                        "Nodo " + (i + 1) + " - Grau de Entrada: " + grauEntrada + ", Grau de Saída: " + grauSaida);
+                System.out.println("Nodo " + (i + 1) + " - Grau de Entrada: " + grauEntrada + ", Grau de Saída: " + grauSaida);
             } else {
-                System.out.println("Nodo " + (i + 1) + " - Grau: " + grauSaida);
+                System.out.println("Nodo " + (i + 1) + " - Grau: " + (grauEntrada));
             }
         }
     }
@@ -129,7 +132,6 @@ class Grafo {
     public boolean isDirecionado() {
         return direcionado;
     }
-
 
     public void calculaMelhorCaminho(int inicio, int destino) {
         inicio -= 1;
@@ -170,20 +172,20 @@ class Grafo {
         if (dist[destino] == Integer.MAX_VALUE) {
             System.out.println("Não existe caminho entre os nodos " + (inicio + 1) + " e " + (destino + 1));
         } else {
-            System.out.println("Distância mínima de " + (inicio + 1) + " até " + (destino + 1) + ": " + dist[destino]);
+            System.out.println("Distância mínima: " + dist[destino] + " parsecs");
             System.out.print("Melhor caminho: ");
             imprimirCaminho(predecessor, destino);
         }
     }
 
-    // Função recursiva para reconstruir o caminho a partir do predecessor
     private void imprimirCaminho(int[] predecessor, int nodo) {
         if (predecessor[nodo] == -1) {
-            System.out.print((nodo + 1));  // Nodo inicial
+            System.out.print((nodo + 1));
             return;
         }
         imprimirCaminho(predecessor, predecessor[nodo]);
-        System.out.print(" -> " + (nodo + 1));  // Caminho até o nodo destino
+        System.out.print(" -> " + (nodo + 1));
+
     }
 
     // Classe auxiliar para representar um nodo na fila de prioridade
