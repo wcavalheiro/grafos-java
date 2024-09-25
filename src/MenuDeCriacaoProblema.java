@@ -1,10 +1,7 @@
 import problema.Caminho;
 import problema.PontoDeSalto;
 
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class MenuDeCriacaoProblema {
 
@@ -68,19 +65,15 @@ public class MenuDeCriacaoProblema {
                     // atualizarCaminho(); // Implementar método para atualizar caminho
                     break;
                 case 6:
-                    removerNodo();
+                    removerPontoDeSalto();
                     break;
                 case 7:
-                    removerAresta();
+                    removerCaminho();
                     break;
                 case 8:
                     listarPontosDeSalto();
-                    grafo.imprimirMatrizAdjacencia();
-                    System.out.println("\n");
-                    grafo.listarGrauNodos();
                     break;
                 case 9:
-                    System.out.println(caminhosMap);
                     listarCaminhos();
                     break;
                 case 10:
@@ -223,7 +216,6 @@ public class MenuDeCriacaoProblema {
                         continue;
                     }
 
-
                 } catch (NumberFormatException e) {
                     System.out.println(MENSAGEM_FORMATO_INVALIDO_DOUBLE);
                     continue;
@@ -241,7 +233,7 @@ public class MenuDeCriacaoProblema {
         }
     }
 
-    private static void removerAresta() {
+    private static void removerCaminho() {
         while (true) {
             if (grafo.getNumNodos() <= 1) {
                 System.out.println("\nVocê possui: [" + grafo.getNumNodos() + "] nodos."
@@ -249,18 +241,29 @@ public class MenuDeCriacaoProblema {
                 break;
             }
 
-            System.out.print("Digite a aresta a ser removida (formato: nodo1 nodo2) ou 'x x' para parar: ");
-            String input1 = sc.next();
-            String input2 = sc.next();
+            System.out.print("Digite a aresta a ser removida (formato: PontoDeSalto-PontoSalto) ou 'x' para parar: ");
+            String caminhoCompleto = sc.nextLine();
 
-            if (input1.equalsIgnoreCase("x") || input2.equalsIgnoreCase("x")) {
+            if (caminhoCompleto.equalsIgnoreCase("x")) {
                 System.out.println("\nParando a remoção de arestas...\n");
                 break;
             }
 
+            String[] partes = caminhoCompleto.split("-", 2);
+            if (partes.length != 2) {
+                System.out.println(ANSI_RED + "\nFormato inválido! Use o formato Ponto Inicial-Ponto Final.\n" + ANSI_RESET);
+                continue;
+            }
+
+            String pontoInicial = partes[0].trim();
+            String pontoFinal = partes[1].trim();
+
             try {
-                int nodo1 = Integer.parseInt(input1);
-                int nodo2 = Integer.parseInt(input2);
+                int nodo1 = Integer.parseInt(pontoInicial);
+                int nodo2 = Integer.parseInt(pontoFinal);
+
+                caminhosMap.entrySet().removeIf(caminho -> caminho.getValue().getPontoInicial() == nodo1 && caminho.getValue().getPontoFinal() == nodo2);
+
                 grafo.removerAresta(nodo1, nodo2);
                 System.out.println("Aresta removida com sucesso.");
 
@@ -268,9 +271,17 @@ public class MenuDeCriacaoProblema {
                 System.out.println(MENSAGEM_FORMATO_INVALIDO_GENERICO);
             }
         }
+        Map<Integer, Caminho> novoMapa = new HashMap<>();
+        int novoIndice = 1;
+
+        for (int chave : caminhosMap.keySet()) {
+            novoMapa.put(novoIndice++, caminhosMap.get(chave));
+        }
+
+        caminhosMap = novoMapa;
     }
 
-    private static void removerNodo() {
+    private static void removerPontoDeSalto() {
         while (true) {
             System.out.print("Digite o número do nodo a ser removido ou 'x' para parar: ");
             String input = sc.next();
@@ -282,13 +293,24 @@ public class MenuDeCriacaoProblema {
 
             try {
                 int nodo = Integer.parseInt(input);
+
+                pontosDeSaltoMap.remove(nodo);
+                caminhosMap.entrySet().removeIf(caminho -> caminho.getValue().getPontoInicial() == nodo || caminho.getValue().getPontoFinal() == nodo);
                 grafo.removerNodo(nodo);
-                grafo.imprimirMatrizAdjacencia();
 
             } catch (NumberFormatException e) {
                 System.out.println(MENSAGEM_FORMATO_INVALIDO_GENERICO);
             }
         }
+
+        Map<Integer, PontoDeSalto> novoMapa = new HashMap<>();
+        int novoIndice = 1;
+
+        for (int chave : pontosDeSaltoMap.keySet()) {
+            novoMapa.put(novoIndice++, pontosDeSaltoMap.get(chave));
+        }
+
+        pontosDeSaltoMap = novoMapa;
     }
 
     private static void listarPontosDeSalto(){

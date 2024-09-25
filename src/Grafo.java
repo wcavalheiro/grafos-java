@@ -2,7 +2,6 @@ import java.util.Arrays;
 import java.util.PriorityQueue;
 
 class Grafo {
-
     private int[][] matrizAdjacencia;
     private int numNodos;
     private boolean direcionado;
@@ -13,16 +12,31 @@ class Grafo {
         matrizAdjacencia = new int[numNodos][numNodos];
     }
 
-    /*public void adicionarAresta(int nodo1, int nodo2) {
-        if (nodo1 <= numNodos && nodo2 <= numNodos) {
-            matrizAdjacencia[nodo1 - 1][nodo2 - 1] = 1;
-            if (!direcionado) {
-                matrizAdjacencia[nodo2 - 1][nodo1 - 1] = 1;
+    public int[][] getMatrizAdjacencia() {
+        return matrizAdjacencia;
+    }
+
+    public void setMatrizAdjacencia(int[][] matrizAdjacencia) {
+        this.matrizAdjacencia = matrizAdjacencia;
+    }
+
+    public int getNumNodos() {
+        return numNodos;
+    }
+
+    public void setNumNodos(int novosNodos) {
+        if (novosNodos != numNodos) {
+            int[][] novaMatriz = new int[novosNodos][novosNodos];
+
+            for (int i = 0; i < Math.min(numNodos, novosNodos); i++) {
+                for (int j = 0; j < Math.min(numNodos, novosNodos); j++) {
+                    novaMatriz[i][j] = matrizAdjacencia[i][j];
+                }
             }
-        } else {
-            System.out.println("Nodos inválidos.");
+            matrizAdjacencia = novaMatriz;
+            numNodos = novosNodos;
         }
-    }*/
+    }
 
     public void adicionarAresta(int nodo1, int nodo2, int peso) {
         if (nodo1 <= numNodos && nodo2 <= numNodos) {
@@ -103,36 +117,6 @@ class Grafo {
         }
     }
 
-    public int[][] getMatrizAdjacencia() {
-        return matrizAdjacencia;
-    }
-
-    public void setMatrizAdjacencia(int[][] matrizAdjacencia) {
-        this.matrizAdjacencia = matrizAdjacencia;
-    }
-
-    public int getNumNodos() {
-        return numNodos;
-    }
-
-    public void setNumNodos(int novosNodos) {
-        if (novosNodos != numNodos) {
-            int[][] novaMatriz = new int[novosNodos][novosNodos];
-
-            for (int i = 0; i < Math.min(numNodos, novosNodos); i++) {
-                for (int j = 0; j < Math.min(numNodos, novosNodos); j++) {
-                    novaMatriz[i][j] = matrizAdjacencia[i][j];
-                }
-            }
-            matrizAdjacencia = novaMatriz;
-            numNodos = novosNodos;
-        }
-    }
-
-    public boolean isDirecionado() {
-        return direcionado;
-    }
-
     public void calculaMelhorCaminho(int inicio, int destino) {
         inicio -= 1;
         destino -= 1;
@@ -188,7 +172,6 @@ class Grafo {
 
     }
 
-    // Classe auxiliar para representar um nodo na fila de prioridade
     private static class Node implements Comparable<Node> {
         int nodo;
         int distancia;
