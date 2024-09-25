@@ -10,12 +10,11 @@ public class Main {
             System.out.println(" --------------------------------------------- ");
             System.out.println(" --------------------------------------------- ");
             System.out.println(" -------------- MENU DE INICIAL -------------- ");
-            System.out.println(" --------------------------------------------- \n");
-            System.out.println(" --------------------------------------------- \n");
+            System.out.println(" --------------------------------------------- ");
+            System.out.println(" --------------------------------------------- ");
             System.out.println(" -------- Escolha a opcao entre 1 a 3 -------- \n");
             System.out.println("1. Crie sua rota espacial");
-            System.out.println("2. Criar sua rota espacial a partir de um arquivo .txt");
-            System.out.println("3. Sair");
+            System.out.println("2. Sair");
             opcao = sc.nextInt();
 
             switch (opcao) {
@@ -24,19 +23,6 @@ public class Main {
                     MenuDeCriacaoProblema.criarGrafo();
                     break;
                 case 2:
-                    System.out.print("Digite o caminho do arquivo .txt: ");
-                    String caminhoArquivo = sc.next();
-
-                    Grafo grafoDoArquivo = LeitorArquivo.lerGrafoDeArquivoTxt(caminhoArquivo);
-
-                    if (grafoDoArquivo != null) {
-                        grafoDoArquivo.imprimirMatrizAdjacencia();
-                        grafoDoArquivo.listarGrauNodos();
-                    } else {
-                        System.out.println("Erro ao carregar o grafo a partir do arquivo.");
-                    }
-                    break;
-                case 3:
                     System.out.println("\n\n --------------------------------------------- \n\n");
                     System.out.println("##     ## ##     ## #### ########  #######        #######  ########  ########  ####  ######      ###    ########   #######  \r\n" + //
                                        "###   ### ##     ##  ##     ##    ##     ##      ##     ## ##     ## ##     ##  ##  ##    ##    ## ##   ##     ## ##     ## \r\n" + //

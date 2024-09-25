@@ -1,10 +1,7 @@
 import problema.Caminho;
 import problema.PontoDeSalto;
 
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class MenuDeCriacaoProblema {
 
@@ -24,7 +21,6 @@ public class MenuDeCriacaoProblema {
     private static Map<Integer, Caminho> caminhosMap = new HashMap<>();
 
     public static void criarGrafo() {
-        System.out.println(caminhosMap);
         grafo = new Grafo(numNodos, false);
 
         boolean running = true;
@@ -50,6 +46,7 @@ public class MenuDeCriacaoProblema {
 
             switch (opcao) {
                 case 1:
+                    limparGrafo();
                     String nomeDoArquivo = lerAPartirDeUmArquivo();
                     grafo = LeitorArquivo.lerGrafoDeArquivoTxt(nomeDoArquivo);
                     pontosDeSaltoMap = LeitorArquivo.getPontosDeSaltoMap();
@@ -68,15 +65,13 @@ public class MenuDeCriacaoProblema {
                     // atualizarCaminho(); // Implementar método para atualizar caminho
                     break;
                 case 6:
-                    removerNodo();
+                    removerPontoDeSalto();
                     break;
                 case 7:
-                    removerAresta();
+                    removerCaminho();
                     break;
                 case 8:
                     listarPontosDeSalto();
-                    grafo.imprimirMatrizAdjacencia();
-                    grafo.listarGrauNodos();
                     break;
                 case 9:
                     listarCaminhos();
@@ -160,6 +155,9 @@ public class MenuDeCriacaoProblema {
             return;
         }
 
+        int nodo1 = 0;
+        int nodo2 = 0;
+
         listarPontosDeSalto();
 
         while (true) {
@@ -210,21 +208,22 @@ public class MenuDeCriacaoProblema {
                 String pontoFinal = partes[1].trim();
 
                 try {
-                    int nodo1 = Integer.parseInt(pontoInicial);
-                    int nodo2 = Integer.parseInt(pontoFinal);
+                    nodo1 = Integer.parseInt(pontoInicial);
+                    nodo2 = Integer.parseInt(pontoFinal);
 
                     if (!pontosDeSaltoMap.containsKey(nodo1) || !pontosDeSaltoMap.containsKey(nodo2)) {
                         System.out.println(ANSI_RED + "\nUm ou ambos os Pontos de Salto não existem.\n" + ANSI_RESET);
                         continue;
                     }
 
-                    Caminho caminho = new Caminho(Integer.parseInt(parsecs), nodo1, nodo2);
-                    caminhosMap.put(indexMapCaminhos++, caminho);
-                    grafo.adicionarAresta(nodo1, nodo2, Integer.parseInt(parsecs));
                 } catch (NumberFormatException e) {
                     System.out.println(MENSAGEM_FORMATO_INVALIDO_DOUBLE);
                     continue;
                 }
+
+                Caminho caminho = new Caminho(Integer.parseInt(parsecs), nodo1, nodo2);
+                caminhosMap.put(indexMapCaminhos++, caminho);
+                grafo.adicionarAresta(nodo1, nodo2, Integer.parseInt(parsecs));
 
                 System.out.println(ANSI_BLUE + "\nCaminho adicionada com sucesso.\n" + ANSI_RESET);
 
@@ -234,7 +233,7 @@ public class MenuDeCriacaoProblema {
         }
     }
 
-    private static void removerAresta() {
+    private static void removerCaminho() {
         while (true) {
             if (grafo.getNumNodos() <= 1) {
                 System.out.println("\nVocê possui: [" + grafo.getNumNodos() + "] nodos."
@@ -242,18 +241,29 @@ public class MenuDeCriacaoProblema {
                 break;
             }
 
-            System.out.print("Digite a aresta a ser removida (formato: nodo1 nodo2) ou 'x x' para parar: ");
-            String input1 = sc.next();
-            String input2 = sc.next();
+            System.out.print("Digite a aresta a ser removida (formato: PontoDeSalto-PontoSalto) ou 'x' para parar: ");
+            String caminhoCompleto = sc.nextLine();
 
-            if (input1.equalsIgnoreCase("x") || input2.equalsIgnoreCase("x")) {
+            if (caminhoCompleto.equalsIgnoreCase("x")) {
                 System.out.println("\nParando a remoção de arestas...\n");
                 break;
             }
 
+            String[] partes = caminhoCompleto.split("-", 2);
+            if (partes.length != 2) {
+                System.out.println(ANSI_RED + "\nFormato inválido! Use o formato Ponto Inicial-Ponto Final.\n" + ANSI_RESET);
+                continue;
+            }
+
+            String pontoInicial = partes[0].trim();
+            String pontoFinal = partes[1].trim();
+
             try {
-                int nodo1 = Integer.parseInt(input1);
-                int nodo2 = Integer.parseInt(input2);
+                int nodo1 = Integer.parseInt(pontoInicial);
+                int nodo2 = Integer.parseInt(pontoFinal);
+
+                caminhosMap.entrySet().removeIf(caminho -> caminho.getValue().getPontoInicial() == nodo1 && caminho.getValue().getPontoFinal() == nodo2);
+
                 grafo.removerAresta(nodo1, nodo2);
                 System.out.println("Aresta removida com sucesso.");
 
@@ -261,9 +271,17 @@ public class MenuDeCriacaoProblema {
                 System.out.println(MENSAGEM_FORMATO_INVALIDO_GENERICO);
             }
         }
+        Map<Integer, Caminho> novoMapa = new HashMap<>();
+        int novoIndice = 1;
+
+        for (int chave : caminhosMap.keySet()) {
+            novoMapa.put(novoIndice++, caminhosMap.get(chave));
+        }
+
+        caminhosMap = novoMapa;
     }
 
-    private static void removerNodo() {
+    private static void removerPontoDeSalto() {
         while (true) {
             System.out.print("Digite o número do nodo a ser removido ou 'x' para parar: ");
             String input = sc.next();
@@ -275,13 +293,24 @@ public class MenuDeCriacaoProblema {
 
             try {
                 int nodo = Integer.parseInt(input);
+
+                pontosDeSaltoMap.remove(nodo);
+                caminhosMap.entrySet().removeIf(caminho -> caminho.getValue().getPontoInicial() == nodo || caminho.getValue().getPontoFinal() == nodo);
                 grafo.removerNodo(nodo);
-                grafo.imprimirMatrizAdjacencia();
 
             } catch (NumberFormatException e) {
                 System.out.println(MENSAGEM_FORMATO_INVALIDO_GENERICO);
             }
         }
+
+        Map<Integer, PontoDeSalto> novoMapa = new HashMap<>();
+        int novoIndice = 1;
+
+        for (int chave : pontosDeSaltoMap.keySet()) {
+            novoMapa.put(novoIndice++, pontosDeSaltoMap.get(chave));
+        }
+
+        pontosDeSaltoMap = novoMapa;
     }
 
     private static void listarPontosDeSalto(){
@@ -301,7 +330,7 @@ public class MenuDeCriacaoProblema {
     private static void encontrarMelhorCaminho(){
         while (true) {
             sc.nextLine(); //Limpeza do Buffer
-            System.out.print("Digite o caminho [Ponto de Partida - Ponto de Chegada ]: ");
+            System.out.print("Digite o caminho [Ponto de Partida-Ponto de Chegada ]: ");
             String caminho = sc.nextLine();
 
             String[] partes = caminho.split("-", 2);
@@ -324,11 +353,12 @@ public class MenuDeCriacaoProblema {
             } catch (NumberFormatException e) {
                 System.out.println(MENSAGEM_FORMATO_INVALIDO_DOUBLE);
             }
-            System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + " - " + " Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET);
+            System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + "\n" + "Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET + "\n");
 
             grafo.calculaMelhorCaminho(pontoDePartida, pontoDeChegada);
+            System.out.println("\n");
+            break;
         }
-
     }
 
     public static void limparGrafo() {
@@ -357,13 +387,11 @@ public class MenuDeCriacaoProblema {
                 System.out.print("Digite o caminho do arquivo .txt: ");
                 caminhoArquivo = sc.nextLine();
 
-                Grafo grafoDoArquivo = LeitorArquivo.lerGrafoDeArquivoTxt(caminhoArquivo);
-
             } catch(InputMismatchException E) {
-                System.out.println(E.getMessage());
+                System.out.println(ANSI_RED + MENSAGEM_FORMATO_INVALIDO_STRING + ANSI_RESET);
+                continue;
             }
             return caminhoArquivo;
         }
-
     }
 }

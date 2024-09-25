@@ -2,7 +2,6 @@ import java.util.Arrays;
 import java.util.PriorityQueue;
 
 class Grafo {
-
     private int[][] matrizAdjacencia;
     private int numNodos;
     private boolean direcionado;
@@ -13,16 +12,31 @@ class Grafo {
         matrizAdjacencia = new int[numNodos][numNodos];
     }
 
-    /*public void adicionarAresta(int nodo1, int nodo2) {
-        if (nodo1 <= numNodos && nodo2 <= numNodos) {
-            matrizAdjacencia[nodo1 - 1][nodo2 - 1] = 1;
-            if (!direcionado) {
-                matrizAdjacencia[nodo2 - 1][nodo1 - 1] = 1;
+    public int[][] getMatrizAdjacencia() {
+        return matrizAdjacencia;
+    }
+
+    public void setMatrizAdjacencia(int[][] matrizAdjacencia) {
+        this.matrizAdjacencia = matrizAdjacencia;
+    }
+
+    public int getNumNodos() {
+        return numNodos;
+    }
+
+    public void setNumNodos(int novosNodos) {
+        if (novosNodos != numNodos) {
+            int[][] novaMatriz = new int[novosNodos][novosNodos];
+
+            for (int i = 0; i < Math.min(numNodos, novosNodos); i++) {
+                for (int j = 0; j < Math.min(numNodos, novosNodos); j++) {
+                    novaMatriz[i][j] = matrizAdjacencia[i][j];
+                }
             }
-        } else {
-            System.out.println("Nodos inválidos.");
+            matrizAdjacencia = novaMatriz;
+            numNodos = novosNodos;
         }
-    }*/
+    }
 
     public void adicionarAresta(int nodo1, int nodo2, int peso) {
         if (nodo1 <= numNodos && nodo2 <= numNodos) {
@@ -87,49 +101,21 @@ class Grafo {
             int grauSaida = 0;
 
             for (int j = 0; j < numNodos; j++) {
-                grauSaida += matrizAdjacencia[i][j];
-                grauEntrada += matrizAdjacencia[j][i];
+                if (matrizAdjacencia[i][j] != 0) {
+                    grauSaida++; // Conta as arestas saindo do nodo i
+                }
+                if (matrizAdjacencia[j][i] != 0) {
+                    grauEntrada++; // Conta as arestas chegando ao nodo i
+                }
             }
 
             if (direcionado) {
-                System.out.println(
-                        "Nodo " + (i + 1) + " - Grau de Entrada: " + grauEntrada + ", Grau de Saída: " + grauSaida);
+                System.out.println("Nodo " + (i + 1) + " - Grau de Entrada: " + grauEntrada + ", Grau de Saída: " + grauSaida);
             } else {
-                System.out.println("Nodo " + (i + 1) + " - Grau: " + grauSaida);
+                System.out.println("Nodo " + (i + 1) + " - Grau: " + (grauEntrada));
             }
         }
     }
-
-    public int[][] getMatrizAdjacencia() {
-        return matrizAdjacencia;
-    }
-
-    public void setMatrizAdjacencia(int[][] matrizAdjacencia) {
-        this.matrizAdjacencia = matrizAdjacencia;
-    }
-
-    public int getNumNodos() {
-        return numNodos;
-    }
-
-    public void setNumNodos(int novosNodos) {
-        if (novosNodos != numNodos) {
-            int[][] novaMatriz = new int[novosNodos][novosNodos];
-
-            for (int i = 0; i < Math.min(numNodos, novosNodos); i++) {
-                for (int j = 0; j < Math.min(numNodos, novosNodos); j++) {
-                    novaMatriz[i][j] = matrizAdjacencia[i][j];
-                }
-            }
-            matrizAdjacencia = novaMatriz;
-            numNodos = novosNodos;
-        }
-    }
-
-    public boolean isDirecionado() {
-        return direcionado;
-    }
-
 
     public void calculaMelhorCaminho(int inicio, int destino) {
         inicio -= 1;
@@ -170,23 +156,22 @@ class Grafo {
         if (dist[destino] == Integer.MAX_VALUE) {
             System.out.println("Não existe caminho entre os nodos " + (inicio + 1) + " e " + (destino + 1));
         } else {
-            System.out.println("Distância mínima de " + (inicio + 1) + " até " + (destino + 1) + ": " + dist[destino]);
+            System.out.println("Distância mínima: " + dist[destino] + " parsecs");
             System.out.print("Melhor caminho: ");
             imprimirCaminho(predecessor, destino);
         }
     }
 
-    // Função recursiva para reconstruir o caminho a partir do predecessor
     private void imprimirCaminho(int[] predecessor, int nodo) {
         if (predecessor[nodo] == -1) {
-            System.out.print((nodo + 1));  // Nodo inicial
+            System.out.print((nodo + 1));
             return;
         }
         imprimirCaminho(predecessor, predecessor[nodo]);
-        System.out.print(" -> " + (nodo + 1));  // Caminho até o nodo destino
+        System.out.print(" -> " + (nodo + 1));
+
     }
 
-    // Classe auxiliar para representar um nodo na fila de prioridade
     private static class Node implements Comparable<Node> {
         int nodo;
         int distancia;

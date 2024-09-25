@@ -11,6 +11,7 @@ public class LeitorArquivo {
     private static Map<Integer, PontoDeSalto> pontosDeSaltoMap = new HashMap<>();
     private static Map<Integer, Caminho> caminhosMap = new HashMap<>();
     private static Grafo grafo;
+    private static int indexMapCaminhos = 1;
 
     public LeitorArquivo() {
         // Construtor vazio
@@ -51,8 +52,9 @@ public class LeitorArquivo {
                     int pontoFinal = Integer.parseInt(partes[1]);
                     int parsecs = Integer.parseInt(partes[2]);
 
-                    // Adiciona aresta ao grafo
                     grafo.adicionarAresta(pontoInicial, pontoFinal, parsecs);
+                    Caminho caminho = new Caminho(parsecs, pontoInicial, pontoFinal);
+                    caminhosMap.put(indexMapCaminhos++, caminho);
                 } else {
                     System.out.println("Formato de linha inválido para caminho: " + line);
                 }
