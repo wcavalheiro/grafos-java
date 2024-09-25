@@ -24,9 +24,8 @@ public class MenuDeCriacaoProblema {
     private static Map<Integer, Caminho> caminhosMap = new HashMap<>();
 
     public static void criarGrafo() {
-
-        boolean direcionado = false;
-        grafo = new Grafo(numNodos, direcionado);
+        System.out.println(caminhosMap);
+        grafo = new Grafo(numNodos, false);
 
         boolean running = true;
         while (running) {
@@ -51,7 +50,10 @@ public class MenuDeCriacaoProblema {
 
             switch (opcao) {
                 case 1:
-                    //adicionarProblemaPorArquivo(); // Implementar método para adicionar problema via arquivo .txt
+                    String nomeDoArquivo = lerAPartirDeUmArquivo();
+                    grafo = LeitorArquivo.lerGrafoDeArquivoTxt(nomeDoArquivo);
+                    pontosDeSaltoMap = LeitorArquivo.getPontosDeSaltoMap();
+                    caminhosMap = LeitorArquivo.getCaminhosMap();
                     break;
                 case 2:
                     adicionarPontoDeSaltoDinamicamente();
@@ -345,5 +347,23 @@ public class MenuDeCriacaoProblema {
         listarPontosDeSalto();
         listarCaminhos();
         System.out.println("\n-------------------------------------------------\n");
+    }
+
+    public static String lerAPartirDeUmArquivo(){
+        String caminhoArquivo = "";
+        while(true){
+            try{
+                sc.nextLine();
+                System.out.print("Digite o caminho do arquivo .txt: ");
+                caminhoArquivo = sc.nextLine();
+
+                Grafo grafoDoArquivo = LeitorArquivo.lerGrafoDeArquivoTxt(caminhoArquivo);
+
+            } catch(InputMismatchException E) {
+                System.out.println(E.getMessage());
+            }
+            return caminhoArquivo;
+        }
+
     }
 }
