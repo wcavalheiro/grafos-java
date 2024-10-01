@@ -51,6 +51,8 @@ public class MenuDeCriacaoProblema {
                     grafo = LeitorArquivo.lerGrafoDeArquivoTxt(nomeDoArquivo);
                     pontosDeSaltoMap = LeitorArquivo.getPontosDeSaltoMap();
                     caminhosMap = LeitorArquivo.getCaminhosMap();
+                    indexNodos = pontosDeSaltoMap.size()+1;
+                    indexMapCaminhos = caminhosMap.size()+1;
                     break;
                 case 2:
                     adicionarPontoDeSaltoDinamicamente();
@@ -142,11 +144,12 @@ public class MenuDeCriacaoProblema {
             PontoDeSalto pontoDeSaltoObjeto = new PontoDeSalto(nome, fatorDeSegurancaNumero);
             pontosDeSaltoMap.put(indexNodos++, pontoDeSaltoObjeto);
             numNodos = pontosDeSaltoMap.size();
-            grafo.setNumNodos(numNodos);
+            grafo.adicionarNodo(pontoDeSaltoObjeto);
 
             System.out.println(ANSI_BLUE + "\nPonto de Salto adicionado com sucesso!\n" + ANSI_RESET);
         }
     }
+
 
     private static void adicionarCaminhosDinamicamente() {
         if (grafo.getNumNodos() <= 1) {
@@ -330,8 +333,12 @@ public class MenuDeCriacaoProblema {
     private static void encontrarMelhorCaminho(){
         while (true) {
             sc.nextLine(); //Limpeza do Buffer
-            System.out.print("Digite o caminho [Ponto de Partida-Ponto de Chegada ]: ");
+            System.out.print("Digite o caminho [Ponto de Partida-Ponto de Chegada]: ");
             String caminho = sc.nextLine();
+            sc.nextLine(); //Limpeza do Buffer
+
+            System.out.print("Fator de segurança aceitável [Somente números 0 a 100]:  ");
+            String fatorSeguranca = sc.nextLine();
 
             String[] partes = caminho.split("-", 2);
             if (partes.length != 2) {
@@ -341,6 +348,7 @@ public class MenuDeCriacaoProblema {
 
             int pontoDePartida = 0;
             int pontoDeChegada = 0;
+            int fatorDeSegurancaInt = 0;
 
             try {
                 pontoDePartida = Integer.parseInt(partes[0].trim());
@@ -350,12 +358,19 @@ public class MenuDeCriacaoProblema {
                     System.out.println(ANSI_RED + "\nUm ou ambos os Pontos de Salto não existem.\n" + ANSI_RESET);
                     break;
                 }
+
+                fatorDeSegurancaInt = Integer.parseInt(fatorSeguranca);
+
+                if(fatorDeSegurancaInt <= 0 || fatorDeSegurancaInt > 100){
+                    System.out.println(ANSI_RED + "\nO fator de segurança deve estar entre 0 e 100%.\n" + ANSI_RESET);
+                    break;
+                }
             } catch (NumberFormatException e) {
                 System.out.println(MENSAGEM_FORMATO_INVALIDO_DOUBLE);
             }
             System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + "\n" + "Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET + "\n");
 
-            grafo.calculaMelhorCaminho(pontoDePartida, pontoDeChegada);
+            grafo.calculaMelhorCaminho(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
             System.out.println("\n");
             break;
         }
@@ -364,7 +379,9 @@ public class MenuDeCriacaoProblema {
     public static void limparGrafo() {
         pontosDeSaltoMap.clear();
         caminhosMap.clear();
+        List<PontoDeSalto> pontoDeSaltosVazio = new ArrayList<>();
         grafo.setNumNodos(0);
+        grafo.setPontosDeSalto(pontoDeSaltosVazio);
         numNodos = 0;
     }
 

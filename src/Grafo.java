@@ -1,10 +1,15 @@
+import problema.PontoDeSalto;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.PriorityQueue;
 
 class Grafo {
     private int[][] matrizAdjacencia;
     private int numNodos;
     private boolean direcionado;
+    private List<PontoDeSalto> pontosDeSalto = new ArrayList<>();
 
     public Grafo(int numNodos, boolean direcionado) {
         this.numNodos = numNodos;
@@ -24,10 +29,13 @@ class Grafo {
         return numNodos;
     }
 
-    public void setNumNodos(int novosNodos) {
+    public void setNumNodos(int numNodos) {
+        this.numNodos = numNodos;
+    }
+
+    public void setNodos(int novosNodos, PontoDeSalto pontoDeSalto) {
         if (novosNodos != numNodos) {
             int[][] novaMatriz = new int[novosNodos][novosNodos];
-
             for (int i = 0; i < Math.min(numNodos, novosNodos); i++) {
                 for (int j = 0; j < Math.min(numNodos, novosNodos); j++) {
                     novaMatriz[i][j] = matrizAdjacencia[i][j];
@@ -35,7 +43,23 @@ class Grafo {
             }
             matrizAdjacencia = novaMatriz;
             numNodos = novosNodos;
+
+            if (novosNodos > numNodos - 1) {
+                pontosDeSalto.add(pontoDeSalto);
+            }
         }
+    }
+
+    public void adicionarNodo(PontoDeSalto pontoDeSalto) {
+        setNodos(numNodos + 1, pontoDeSalto);
+    }
+
+    public List<PontoDeSalto> getPontosDeSalto() {
+        return pontosDeSalto;
+    }
+
+    public void setPontosDeSalto(List<PontoDeSalto> pontosDeSalto) {
+        this.pontosDeSalto = pontosDeSalto;
     }
 
     public void adicionarAresta(int nodo1, int nodo2, int peso) {
@@ -89,7 +113,7 @@ class Grafo {
         System.out.println("\nMatriz de Adjacência:");
         for (int i = 0; i < numNodos; i++) {
             for (int j = 0; j < numNodos; j++) {
-                System.out.print(matrizAdjacencia[i][j] + " ");
+                System.out.print(matrizAdjacencia[i][j] + "   ");
             }
             System.out.println();
         }
@@ -102,10 +126,10 @@ class Grafo {
 
             for (int j = 0; j < numNodos; j++) {
                 if (matrizAdjacencia[i][j] != 0) {
-                    grauSaida++; // Conta as arestas saindo do nodo i
+                    grauSaida++;
                 }
                 if (matrizAdjacencia[j][i] != 0) {
-                    grauEntrada++; // Conta as arestas chegando ao nodo i
+                    grauEntrada++;
                 }
             }
 
@@ -117,7 +141,7 @@ class Grafo {
         }
     }
 
-    public void calculaMelhorCaminho(int inicio, int destino) {
+    /*public void calculaMelhorCaminho(int inicio, int destino) {
         inicio -= 1;
         destino -= 1;
 
@@ -145,14 +169,13 @@ class Grafo {
 
                     if (novaDist < dist[v]) {
                         dist[v] = novaDist;
-                        predecessor[v] = u;  // Armazena o nodo de onde viemos
+                        predecessor[v] = u;
                         pq.add(new Node(v, dist[v]));
                     }
                 }
             }
         }
 
-        // Agora que temos a distância mínima e os predecessores, reconstruímos o caminho
         if (dist[destino] == Integer.MAX_VALUE) {
             System.out.println("Não existe caminho entre os nodos " + (inicio + 1) + " e " + (destino + 1));
         } else {
@@ -160,7 +183,55 @@ class Grafo {
             System.out.print("Melhor caminho: ");
             imprimirCaminho(predecessor, destino);
         }
+    }*/
+
+    public void calculaMelhorCaminho(int inicio, int destino, int fatorSegurancaAceitavel) {
+        inicio -= 1;
+        destino -= 1;
+
+        int[] dist = new int[numNodos];
+        int[] predecessor = new int[numNodos];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        Arrays.fill(predecessor, -1);
+        dist[inicio] = 0;
+
+        boolean[] visitado = new boolean[numNodos];  // Marca nodos visitados
+
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.add(new Node(inicio, 0));
+
+        while (!pq.isEmpty()) {
+            Node atual = pq.poll();
+            int u = atual.nodo;
+
+            if (visitado[u]) continue;
+            visitado[u] = true;
+
+            for (int v = 0; v < numNodos; v++) {
+                if (matrizAdjacencia[u][v] != 0 && !visitado[v]) {
+                    PontoDeSalto pontoV = pontosDeSalto.get(v);
+                    if (pontoV.getFatorDeSeguranca() >= fatorSegurancaAceitavel) {
+                        int novaDist = dist[u] + matrizAdjacencia[u][v];
+
+                        if (novaDist < dist[v]) {
+                            dist[v] = novaDist;
+                            predecessor[v] = u;
+                            pq.add(new Node(v, dist[v]));
+                        }
+                    }
+                }
+            }
+        }
+
+        if (dist[destino] == Integer.MAX_VALUE || predecessor[destino] == -1) {
+            System.out.println("Não existe um caminho entre os nodos " + (inicio + 1) + " e " + (destino + 1) + " que atenda ao fator de segurança especificado.");
+        } else {
+            System.out.println("Distância mínima: " + dist[destino] + " parsecs");
+            System.out.print("Melhor caminho: ");
+            imprimirCaminho(predecessor, destino);
+        }
     }
+
 
     private void imprimirCaminho(int[] predecessor, int nodo) {
         if (predecessor[nodo] == -1) {

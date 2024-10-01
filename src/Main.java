@@ -6,7 +6,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int opcao = 0;
 
-        while (opcao != 3) {
+        while (opcao != 2) {
             System.out.println(" --------------------------------------------- ");
             System.out.println(" --------------------------------------------- ");
             System.out.println(" -------------- MENU DE INICIAL -------------- ");

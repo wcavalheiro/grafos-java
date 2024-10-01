@@ -21,12 +21,10 @@ public class LeitorArquivo {
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
             String line;
 
-            // Leitura do número de nodos
             line = br.readLine();
             int numNodos = Integer.parseInt(line.trim());
             grafo = new Grafo(numNodos, false); // Supondo não direcionado, ajuste se necessário
 
-            // Leitura dos Pontos de Salto
             for (int i = 0; i < numNodos; i++) {
                 line = br.readLine();
                 String[] partes = line.trim().split("\\s+");
@@ -43,7 +41,6 @@ public class LeitorArquivo {
                 }
             }
 
-            // Leitura dos Caminhos (Arestas)
             while ((line = br.readLine()) != null) {
                 String[] partes = line.trim().split("\\s+");
 
