@@ -15,6 +15,7 @@ class Grafo {
         this.numNodos = numNodos;
         this.direcionado = direcionado;
         matrizAdjacencia = new int[numNodos][numNodos];
+        this.pontosDeSalto = getPontosDeSalto();
     }
 
     public int[][] getMatrizAdjacencia() {
@@ -195,7 +196,7 @@ class Grafo {
         Arrays.fill(predecessor, -1);
         dist[inicio] = 0;
 
-        boolean[] visitado = new boolean[numNodos];  // Marca nodos visitados
+        boolean[] visitado = new boolean[numNodos];
 
         PriorityQueue<Node> pq = new PriorityQueue<>();
         pq.add(new Node(inicio, 0));
@@ -231,7 +232,6 @@ class Grafo {
             imprimirCaminho(predecessor, destino);
         }
     }
-
 
     private void imprimirCaminho(int[] predecessor, int nodo) {
         if (predecessor[nodo] == -1) {

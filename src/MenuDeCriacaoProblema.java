@@ -27,7 +27,7 @@ public class MenuDeCriacaoProblema {
         while (running) {
             System.out.println("\nMenu:");
 
-            System.out.println("1. Adicionar problema por arquivo .txt");
+            System.out.println("1. Adicionar problema por arquivo.txt");
             System.out.println("2. Adicionar Ponto de Salto");
             System.out.println("3. Adicionar Caminho");
             System.out.println("4. Atualizar Ponto de Salto");
@@ -335,7 +335,6 @@ public class MenuDeCriacaoProblema {
             sc.nextLine(); //Limpeza do Buffer
             System.out.print("Digite o caminho [Ponto de Partida-Ponto de Chegada]: ");
             String caminho = sc.nextLine();
-            sc.nextLine(); //Limpeza do Buffer
 
             System.out.print("Fator de segurança aceitável [Somente números 0 a 100]:  ");
             String fatorSeguranca = sc.nextLine();
@@ -382,7 +381,9 @@ public class MenuDeCriacaoProblema {
         List<PontoDeSalto> pontoDeSaltosVazio = new ArrayList<>();
         grafo.setNumNodos(0);
         grafo.setPontosDeSalto(pontoDeSaltosVazio);
-        numNodos = 0;
+        indexNodos = 1;
+        indexMapCaminhos = 1;
+
     }
 
     public static void visualizarDadosDoGrafo(){

@@ -23,19 +23,20 @@ public class LeitorArquivo {
 
             line = br.readLine();
             int numNodos = Integer.parseInt(line.trim());
-            grafo = new Grafo(numNodos, false); // Supondo não direcionado, ajuste se necessário
+            grafo = new Grafo(numNodos, false);
 
             for (int i = 0; i < numNodos; i++) {
                 line = br.readLine();
                 String[] partes = line.trim().split("\\s+");
 
                 if (partes.length == 3) {
-                    int id = Integer.parseInt(partes[0]); // ID do ponto de salto
-                    String nome = partes[1];             // Nome do ponto de salto
-                    double fatorDeSeguranca = Double.parseDouble(partes[2]); // Fator de segurança
+                    int id = Integer.parseInt(partes[0]);
+                    String nome = partes[1];
+                    double fatorDeSeguranca = Double.parseDouble(partes[2]);
 
                     PontoDeSalto pontoDeSalto = new PontoDeSalto(nome, fatorDeSeguranca);
                     pontosDeSaltoMap.put(id, pontoDeSalto);
+                    grafo.adicionarNodo(pontoDeSalto);
                 } else {
                     System.out.println("Formato de linha inválido para ponto de salto: " + line);
                 }

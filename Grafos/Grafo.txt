@@ -1,9 +1,9 @@
 7
 1 Centauri 50
-2 Korvec 20
+2 Korvec 25
 3 MLO909 18
 4 Alpha-6 25
-5 Hover 12
+5 Hover 25
 6 Vega 100
 7 Kalisto1 50 
 1 2 10
