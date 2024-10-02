@@ -9,10 +9,10 @@ public class Main {
         while (opcao != 2) {
             System.out.println(" --------------------------------------------- ");
             System.out.println(" --------------------------------------------- ");
-            System.out.println(" -------------- MENU DE INICIAL -------------- ");
+            System.out.println(" -------- BEM VINDO AO CONVEX ROUTES --------- ");
             System.out.println(" --------------------------------------------- ");
             System.out.println(" --------------------------------------------- ");
-            System.out.println(" -------- Escolha a opcao entre 1 a 3 -------- \n");
+            System.out.println(" -------- Escolha a opcao entre 1 e 2 -------- \n");
             System.out.println("1. Crie sua rota espacial");
             System.out.println("2. Sair");
             opcao = sc.nextInt();

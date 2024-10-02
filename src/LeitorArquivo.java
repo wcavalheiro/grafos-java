@@ -23,7 +23,7 @@ public class LeitorArquivo {
 
             line = br.readLine();
             int numNodos = Integer.parseInt(line.trim());
-            grafo = new Grafo(numNodos, false);
+            grafo = new Grafo(0, false);
 
             for (int i = 0; i < numNodos; i++) {
                 line = br.readLine();

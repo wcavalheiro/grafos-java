@@ -27,7 +27,7 @@ public class MenuDeCriacaoProblema {
         while (running) {
             System.out.println("\nMenu:");
 
-            System.out.println("1. Adicionar problema por arquivo.txt");
+            System.out.println("1. Adicionar Mapa por arquivo.txt");
             System.out.println("2. Adicionar Ponto de Salto");
             System.out.println("3. Adicionar Caminho");
             System.out.println("4. Atualizar Ponto de Salto");
@@ -36,8 +36,8 @@ public class MenuDeCriacaoProblema {
             System.out.println("7. Remover Caminho");
             System.out.println("8. Visualizar Pontos de Salto");
             System.out.println("9. Visualizar Caminhos");
-            System.out.println("10. Visualizar Dados do Grafo");
-            System.out.println("11. Visualizar Melhor Caminho");
+            System.out.println("10. Visualizar Dados do Mapa (Grafo)");
+            System.out.println("11. Visualizar Melhor Caminho (Mais rápido e Mais Seguro™)");
             System.out.println("12. Limpar Rota");
             System.out.println("13. Sair");
 
@@ -121,7 +121,7 @@ public class MenuDeCriacaoProblema {
             }
 
             while (true) {
-                System.out.print("Digite a porcentagem de segurança [0 a 100, de inseguro a muito seguro]: ");
+                System.out.print("Digite a porcentagem de segurança [0 a 100, Sendo 0 Inseguro e 100 Muito Seguro]: ");
                 String fatorDeSeguranca = sc.next();
 
                 if (fatorDeSeguranca.equalsIgnoreCase("x")) {
@@ -173,7 +173,7 @@ public class MenuDeCriacaoProblema {
                         parsecs = sc.nextLine();
 
                         if (parsecs.equalsIgnoreCase("x")) {
-                            System.out.println("\nParando a inserção de arestas...\n");
+                            System.out.println("\nParando a inserção de Caminhos...\n");
                             return;
                         }
 
@@ -197,7 +197,7 @@ public class MenuDeCriacaoProblema {
                 String aresta = sc.next();
 
                 if (aresta.equalsIgnoreCase("x")) {
-                    System.out.println("\nParando a inserção de arestas...\n");
+                    System.out.println("\nParando a inserção de Caminhos...\n");
                     break;
                 }
 
@@ -240,15 +240,15 @@ public class MenuDeCriacaoProblema {
         while (true) {
             if (grafo.getNumNodos() <= 1) {
                 System.out.println("\nVocê possui: [" + grafo.getNumNodos() + "] nodos."
-                        + "\nNão é possível remover arestas com menos de dois nodos.");
+                        + "\nNão é possível remover Caminhos com menos de dois Pontos de Salto.");
                 break;
             }
 
-            System.out.print("Digite a aresta a ser removida (formato: PontoDeSalto-PontoSalto) ou 'x' para parar: ");
+            System.out.print("Digite o Caminho a ser removido (formato: PontoDeSalto-PontoDeSalto) ou 'x' para parar: ");
             String caminhoCompleto = sc.nextLine();
 
             if (caminhoCompleto.equalsIgnoreCase("x")) {
-                System.out.println("\nParando a remoção de arestas...\n");
+                System.out.println("\nParando a remoção de Caminhos...\n");
                 break;
             }
 
@@ -268,7 +268,7 @@ public class MenuDeCriacaoProblema {
                 caminhosMap.entrySet().removeIf(caminho -> caminho.getValue().getPontoInicial() == nodo1 && caminho.getValue().getPontoFinal() == nodo2);
 
                 grafo.removerAresta(nodo1, nodo2);
-                System.out.println("Aresta removida com sucesso.");
+                System.out.println("Caminho removido com sucesso.");
 
             } catch (NumberFormatException e) {
                 System.out.println(MENSAGEM_FORMATO_INVALIDO_GENERICO);
@@ -286,11 +286,11 @@ public class MenuDeCriacaoProblema {
 
     private static void removerPontoDeSalto() {
         while (true) {
-            System.out.print("Digite o número do nodo a ser removido ou 'x' para parar: ");
+            System.out.print("Digite o número do Ponto de Salto a ser removido ou 'x' para parar: ");
             String input = sc.next();
 
             if (input.equalsIgnoreCase("x")) {
-                System.out.println("\nParando a remoção de nodos...\n");
+                System.out.println("\nParando a remoção de Pontos de Salto...\n");
                 break;
             }
 
@@ -388,10 +388,14 @@ public class MenuDeCriacaoProblema {
 
     public static void visualizarDadosDoGrafo(){
         System.out.println("\n-------------------------------------------------\n");
+        System.out.println("\n-------------DADOS DO GRAFO----------------------\n");
+        System.out.println("\n-------------------------------------------------\n");
         grafo.imprimirMatrizAdjacencia();
+        System.out.println("\n");
         grafo.listarGrauNodos();
+        System.out.println("\n");
         System.out.println("\n--------------------------------------------------\n");
-        System.out.println("\n--------------- DADOS DO PROBLEMA ----------------\n");
+        System.out.println("\n--------------- DADOS DO MAPA ----------------\n");
         listarPontosDeSalto();
         listarCaminhos();
         System.out.println("\n-------------------------------------------------\n");
