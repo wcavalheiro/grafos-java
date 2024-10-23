@@ -39,7 +39,8 @@ public class MenuDeCriacaoProblema {
             System.out.println("10. Visualizar Dados do Mapa (Grafo)");
             System.out.println("11. Visualizar Melhor Caminho (Mais rápido e Mais Seguro™)");
             System.out.println("12. Limpar Rota");
-            System.out.println("13. Sair");
+            System.out.println("13. Ver o MAPA!!!!!!!!");
+            System.out.println("14. Sair");
 
             System.out.print("\nEscolha uma opção: ");
             int opcao = sc.nextInt();
@@ -89,6 +90,9 @@ public class MenuDeCriacaoProblema {
                     System.out.println("\nO Grafo de Pontos de Salto foi limpo..");
                     break;
                 case 13:
+                    visualizarMapa();
+                    break; 
+                case 14:
                     limparGrafo();
                     running = false;
                     System.out.println("\nEncerrando...");
@@ -97,6 +101,9 @@ public class MenuDeCriacaoProblema {
                     System.out.println(ANSI_RED + "\nOpção inválida." + ANSI_RESET);
             }
         }
+    }
+
+    private static void visualizarMapa() {
     }
 
 

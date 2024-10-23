@@ -1,3 +1,5 @@
+import org.graphstream.graph.*;
+import org.graphstream.graph.implementations.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -64,7 +66,37 @@ public class LeitorArquivo {
             System.out.println("Erro no formato do arquivo: " + e.getMessage());
         }
 
+        // Chama o método para visualizar o grafo após a leitura do arquivo
+        visualizarGrafo();
+
         return grafo;
+    }
+
+    private static void visualizarGrafo() {
+        // Definir a propriedade para usar o Swing
+        System.setProperty("org.graphstream.ui", "swing");
+
+        // Criar um grafo do GraphStream
+        Graph graph = new SingleGraph("Grafo Lido");
+
+        // Adicionar nós
+        for (Map.Entry<Integer, PontoDeSalto> entry : pontosDeSaltoMap.entrySet()) {
+            int id = entry.getKey();
+            PontoDeSalto ponto = entry.getValue();
+            graph.addNode(String.valueOf(id)).setAttribute("ui.label", ponto.getNome());
+        }
+
+        // Adicionar arestas
+        for (int i = 1; i < indexMapCaminhos; i++) {
+            Caminho caminho = caminhosMap.get(i);
+            graph.addEdge(caminho.getPontoInicial() + "-" + caminho.getPontoFinal(),
+                            String.valueOf(caminho.getPontoInicial()),
+                            String.valueOf(caminho.getPontoFinal()))
+                    .setAttribute("ui.label", String.valueOf(caminho.getParsec()));
+        }
+
+        // Exibir o grafo
+        graph.display();
     }
 
     public static Map<Integer, PontoDeSalto> getPontosDeSaltoMap() {
