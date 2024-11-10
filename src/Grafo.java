@@ -186,7 +186,7 @@ class Grafo {
         }
     }*/
 
-    public void calculaMelhorCaminho(int inicio, int destino, int fatorSegurancaAceitavel) {
+    public void algoritmoDijkstra(int inicio, int destino, int fatorSegurancaAceitavel) {
         inicio -= 1;
         destino -= 1;
 
@@ -256,6 +256,45 @@ class Grafo {
         public int compareTo(Node other) {
             return Integer.compare(this.distancia, other.distancia);
         }
+    }
+
+    public void algoritmoBF(int inicio, int destino, int fatorSegurancaAceitavel) {
+        inicio -= 1;
+        destino -= 1;
+        boolean[] visitado = new boolean[numNodos];
+        List<Integer> caminhoAtual = new ArrayList<>();
+
+        if (bf(inicio, destino, fatorSegurancaAceitavel, visitado, caminhoAtual)) {
+            System.out.println("Caminho encontrado:");
+            for (int i = 0; i < caminhoAtual.size(); i++) {
+                System.out.print((caminhoAtual.get(i) + 1) + (i < caminhoAtual.size() - 1 ? " -> " : ""));
+            }
+        } else {
+            System.out.println("Não existe um caminho entre os nodos " + (inicio + 1) + " e " + (destino + 1) + " que atenda ao fator de segurança especificado.");
+        }
+    }
+
+    private boolean bf(int atual, int destino, int fatorSegurancaAceitavel, boolean[] visitado, List<Integer> caminhoAtual) {
+        visitado[atual] = true;
+        caminhoAtual.add(atual);
+
+        if (atual == destino) {
+            return true;
+        }
+
+        for (int v = 0; v < numNodos; v++) {
+            if (matrizAdjacencia[atual][v] != 0 && !visitado[v]) {
+                PontoDeSalto pontoV = pontosDeSalto.get(v);
+                if (pontoV.getFatorDeSeguranca() >= fatorSegurancaAceitavel) {
+                    if (bf(v, destino, fatorSegurancaAceitavel, visitado, caminhoAtual)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        caminhoAtual.remove(caminhoAtual.size() - 1); // remove o último nodo se caminho não encontrado
+        return false;
     }
 
 }
