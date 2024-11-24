@@ -39,8 +39,9 @@ public class MenuDeCriacaoProblema {
             System.out.println("10. Visualizar Dados do Mapa (Grafo)");
             System.out.println("11. Visualizar Melhor Caminho (Mais rápido e Mais Seguro™)");
             System.out.println("12. Limpar Rota");
-            System.out.println("13. Ver o MAPA!!!!!!!!");
-            System.out.println("14. Sair");
+            System.out.println("13. Ver o Mapa");
+            System.out.println("14. Visualizar melhor caminho por largura");
+            System.out.println("15. Sair");
 
             System.out.print("\nEscolha uma opção: ");
             int opcao = sc.nextInt();
@@ -91,8 +92,11 @@ public class MenuDeCriacaoProblema {
                     break;
                 case 13:
                     visualizarMapa();
-                    break; 
+                    break;
                 case 14:
+                    encontrarMelhorCaminhoLargura();
+                    break;
+                case 15:
                     limparGrafo();
                     running = false;
                     System.out.println("\nEncerrando...");
@@ -377,6 +381,51 @@ public class MenuDeCriacaoProblema {
             System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + "\n" + "Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET + "\n");
 
             grafo.algoritmoDijkstra(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
+            System.out.println("\n");
+            break;
+        }
+    }
+
+    private static void encontrarMelhorCaminhoLargura(){
+        while (true) {
+            sc.nextLine(); //Limpeza do Buffer
+            System.out.print("Digite o caminho [Ponto de Partida-Ponto de Chegada]: ");
+            String caminho = sc.nextLine();
+
+            System.out.print("Fator de segurança aceitável [Somente números 0 a 100]:  ");
+            String fatorSeguranca = sc.nextLine();
+
+            String[] partes = caminho.split("-", 2);
+            if (partes.length != 2) {
+                System.out.println(ANSI_RED + "\nFormato inválido! Use o formato Ponto Inicial - Ponto Final.\n" + ANSI_RESET);
+                continue;
+            }
+
+            int pontoDePartida = 0;
+            int pontoDeChegada = 0;
+            int fatorDeSegurancaInt = 0;
+
+            try {
+                pontoDePartida = Integer.parseInt(partes[0].trim());
+                pontoDeChegada = Integer.parseInt(partes[1].trim());
+
+                if (!pontosDeSaltoMap.containsKey(pontoDePartida) || !pontosDeSaltoMap.containsKey(pontoDeChegada)) {
+                    System.out.println(ANSI_RED + "\nUm ou ambos os Pontos de Salto não existem.\n" + ANSI_RESET);
+                    break;
+                }
+
+                fatorDeSegurancaInt = Integer.parseInt(fatorSeguranca);
+
+                if(fatorDeSegurancaInt <= 0 || fatorDeSegurancaInt > 100){
+                    System.out.println(ANSI_RED + "\nO fator de segurança deve estar entre 0 e 100%.\n" + ANSI_RESET);
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(MENSAGEM_FORMATO_INVALIDO_DOUBLE);
+            }
+            System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + "\n" + "Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET + "\n");
+
+            grafo.algoritmoBFS(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
             System.out.println("\n");
             break;
         }

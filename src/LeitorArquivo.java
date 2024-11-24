@@ -73,10 +73,8 @@ public class LeitorArquivo {
     }
 
     private static void visualizarGrafo() {
-        // Definir a propriedade para usar o Swing
         System.setProperty("org.graphstream.ui", "swing");
 
-        // Criar um grafo do GraphStream
         Graph graph = new SingleGraph("Grafo Lido");
 
         // Adicionar nós
@@ -94,8 +92,6 @@ public class LeitorArquivo {
                             String.valueOf(caminho.getPontoFinal()))
                     .setAttribute("ui.label", String.valueOf(caminho.getParsec()));
         }
-
-        // Exibir o grafo
         graph.display();
     }
 

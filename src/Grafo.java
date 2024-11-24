@@ -1,9 +1,6 @@
 import problema.PontoDeSalto;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 class Grafo {
     private int[][] matrizAdjacencia;
@@ -273,6 +270,61 @@ class Grafo {
             System.out.println("Não existe um caminho entre os nodos " + (inicio + 1) + " e " + (destino + 1) + " que atenda ao fator de segurança especificado.");
         }
     }
+
+    public void algoritmoBFS(int inicio, int destino, int fatorSegurancaAceitavel) {
+        inicio -= 1;
+        destino -= 1;
+        boolean[] visitado = new boolean[numNodos];
+        int[] anterior = new int[numNodos];
+
+        Arrays.fill(anterior, -1);
+
+        if (bfs(inicio, destino, fatorSegurancaAceitavel, visitado, anterior)) {
+            System.out.println("Caminho encontrado:");
+            List<Integer> caminho = reconstruirCaminho(anterior, inicio, destino);
+            for (int i = 0; i < caminho.size(); i++) {
+                System.out.print((caminho.get(i) + 1) + (i < caminho.size() - 1 ? " -> " : ""));
+            }
+        } else {
+            System.out.println("Não existe um caminho entre os nodos " + (inicio + 1) + " e " + (destino + 1) + " que atenda ao fator de segurança especificado.");
+        }
+    }
+
+    private boolean bfs(int inicio, int destino, int fatorSegurancaAceitavel, boolean[] visitado, int[] anterior) {
+        Queue<Integer> fila = new LinkedList<>();
+        visitado[inicio] = true;
+        fila.add(inicio);
+
+        while (!fila.isEmpty()) {
+            int atual = fila.poll();
+
+            if (atual == destino) {
+                return true;
+            }
+
+            for (int v = 0; v < numNodos; v++) {
+                if (matrizAdjacencia[atual][v] != 0 && !visitado[v]) {
+                    PontoDeSalto pontoV = pontosDeSalto.get(v);
+                    if (pontoV.getFatorDeSeguranca() >= fatorSegurancaAceitavel) {
+                        visitado[v] = true;
+                        anterior[v] = atual;
+                        fila.add(v);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private List<Integer> reconstruirCaminho(int[] anterior, int inicio, int destino) {
+        List<Integer> caminho = new ArrayList<>();
+        for (int at = destino; at != -1; at = anterior[at]) {
+            caminho.add(at);
+        }
+        Collections.reverse(caminho);
+        return caminho;
+    }
+
 
     private boolean bf(int atual, int destino, int fatorSegurancaAceitavel, boolean[] visitado, List<Integer> caminhoAtual) {
         visitado[atual] = true;
