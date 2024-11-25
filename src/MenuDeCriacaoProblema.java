@@ -391,7 +391,7 @@ public class MenuDeCriacaoProblema {
             }
             System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + "\n" + "Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET + "\n");
 
-            grafo.encontrarTodosOsCaminhosDijkstra(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
+            grafo.algoritmoDijkstra(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
             System.out.println("\n");
             break;
         }

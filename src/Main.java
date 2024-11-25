@@ -13,7 +13,7 @@ public class Main {
             System.out.println(" --------------------------------------------- ");
             System.out.println(" --------------------------------------------- ");
             System.out.println(" -------- Escolha a opcao entre 1 e 2 -------- \n");
-            System.out.println("1. Crie sua rota espacial");
+            System.out.println("1. Acessar o Sistema");
             System.out.println("2. Sair");
             opcao = sc.nextInt();
 
