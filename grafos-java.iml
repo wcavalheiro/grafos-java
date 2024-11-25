@@ -16,5 +16,11 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="src" level="project" />
+    <orderEntry type="library" name="projectlombok.lombok" level="project" />
+    <orderEntry type="library" name="graphstream.gs.ui.swing" level="application" />
+    <orderEntry type="library" name="graphstream.gs.core" level="application" />
+    <orderEntry type="library" name="graphstream.gs.algo" level="application" />
+    <orderEntry type="library" name="graphstream.gs.ui.javafx" level="application" />
   </component>
 </module>

@@ -6,14 +6,14 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int opcao = 0;
 
-        while (opcao != 3) {
+        while (opcao != 2) {
             System.out.println(" --------------------------------------------- ");
             System.out.println(" --------------------------------------------- ");
-            System.out.println(" -------------- MENU DE INICIAL -------------- ");
+            System.out.println(" -------- BEM VINDO AO CONVEX ROUTES --------- ");
             System.out.println(" --------------------------------------------- ");
             System.out.println(" --------------------------------------------- ");
-            System.out.println(" -------- Escolha a opcao entre 1 a 3 -------- \n");
-            System.out.println("1. Crie sua rota espacial");
+            System.out.println(" -------- Escolha a opcao entre 1 e 2 -------- \n");
+            System.out.println("1. Acessar o Sistema");
             System.out.println("2. Sair");
             opcao = sc.nextInt();
 

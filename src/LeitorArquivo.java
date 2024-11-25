@@ -1,3 +1,5 @@
+import org.graphstream.graph.*;
+import org.graphstream.graph.implementations.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,29 +23,27 @@ public class LeitorArquivo {
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
             String line;
 
-            // Leitura do número de nodos
             line = br.readLine();
             int numNodos = Integer.parseInt(line.trim());
-            grafo = new Grafo(numNodos, false); // Supondo não direcionado, ajuste se necessário
+            grafo = new Grafo(0, false);
 
-            // Leitura dos Pontos de Salto
             for (int i = 0; i < numNodos; i++) {
                 line = br.readLine();
                 String[] partes = line.trim().split("\\s+");
 
                 if (partes.length == 3) {
-                    int id = Integer.parseInt(partes[0]); // ID do ponto de salto
-                    String nome = partes[1];             // Nome do ponto de salto
-                    double fatorDeSeguranca = Double.parseDouble(partes[2]); // Fator de segurança
+                    int id = Integer.parseInt(partes[0]);
+                    String nome = partes[1];
+                    double fatorDeSeguranca = Double.parseDouble(partes[2]);
 
                     PontoDeSalto pontoDeSalto = new PontoDeSalto(nome, fatorDeSeguranca);
                     pontosDeSaltoMap.put(id, pontoDeSalto);
+                    grafo.adicionarNodo(pontoDeSalto);
                 } else {
                     System.out.println("Formato de linha inválido para ponto de salto: " + line);
                 }
             }
 
-            // Leitura dos Caminhos (Arestas)
             while ((line = br.readLine()) != null) {
                 String[] partes = line.trim().split("\\s+");
 
