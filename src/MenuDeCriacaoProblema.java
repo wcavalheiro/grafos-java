@@ -30,23 +30,15 @@ public class MenuDeCriacaoProblema {
             System.out.println("\nMenu:");
 
             System.out.println("1. Adicionar Mapa por arquivo.txt");
-            System.out.println("2. Adicionar Ponto de Salto");
-            System.out.println("3. Adicionar Caminho");
-            System.out.println("4. Atualizar Ponto de Salto");
-            System.out.println("5. Atualizar Caminho");
-            System.out.println("6. Remover Ponto de Salto");
-            System.out.println("7. Remover Caminho");
-            System.out.println("8. Visualizar Pontos de Salto");
-            System.out.println("9. Visualizar Caminhos");
-            System.out.println("10. Visualizar Informações do Mapa");
-            System.out.println("11. Visualizar Caminho por Dijkstra (Mais rápido e Mais Seguro™)");
-            System.out.println("12. Limpar Rota");
-            System.out.println("13. Ver o desenho do Mapa");
-            System.out.println("14. Visualizar melhor caminho por Profundidade");
-            System.out.println("15. Visualizar melhor caminho por Largura");
-            System.out.println("16. Visualizar melhor caminho por Floyd");
-            System.out.println("17. Visualizar melhor caminho por Ford");
-            System.out.println("18. Sair");
+            System.out.println("2. Visualizar Informações do Mapa");
+            System.out.println("3. Limpar Rota");
+            System.out.println("4. Ver o desenho do Mapa");
+            System.out.println("5. Visualizar melhor caminho por Dijkstra");
+            System.out.println("6. Visualizar melhor caminho por Profundidade");
+            System.out.println("7. Visualizar melhor caminho por Largura");
+            System.out.println("8. Visualizar melhor caminho por Floyd");
+            System.out.println("9. Visualizar melhor caminho por Ford");
+            System.out.println("10. Sair");
 
             System.out.print("\nEscolha uma opção: ");
             int opcao = sc.nextInt();
@@ -58,59 +50,55 @@ public class MenuDeCriacaoProblema {
                     grafo = LeitorArquivo.lerGrafoDeArquivoTxt(nomeDoArquivo);
                     pontosDeSaltoMap = LeitorArquivo.getPontosDeSaltoMap();
                     caminhosMap = LeitorArquivo.getCaminhosMap();
-                    indexNodos = pontosDeSaltoMap.size()+1;
-                    indexMapCaminhos = caminhosMap.size()+1;
+                    indexNodos = pontosDeSaltoMap.size() + 1;
+                    indexMapCaminhos = caminhosMap.size() + 1;
                     break;
                 case 2:
-                    adicionarPontoDeSaltoDinamicamente();
-                    break;
-                case 3:
-                    adicionarCaminhosDinamicamente();
-                    break;
-                case 4:
-                    // atualizarPontoDeSalto(); // Implementar método para atualizar ponto de salto
-                    break;
-                case 5:
-                    // atualizarCaminho(); // Implementar método para atualizar caminho
-                    break;
-                case 6:
-                    removerPontoDeSalto();
-                    break;
-                case 7:
-                    removerCaminho();
-                    break;
-                case 8:
-                    listarPontosDeSalto();
-                    break;
-                case 9:
-                    listarCaminhos();
-                    break;
-                case 10:
                     visualizarDadosDoGrafo();
                     break;
-                case 11:
-                    encontrarMelhorCaminho();
-                    break;
-                case 12:
+                case 3:
                     limparGrafo();
                     System.out.println("\nO Grafo de Pontos de Salto foi limpo..");
                     break;
-                case 13:
+                case 4:
                     visualizarMapa();
                     break;
-                case 14:
+                case 5: {
+                    long startTime = System.nanoTime();
+                    encontrarMelhorCaminho();
+                    long endTime = System.nanoTime();
+                    System.out.printf("\nTempo de execução (Dijkstra): %.3f ms%n", (endTime - startTime) / 1e6);
+                    break;
+                }
+                case 6: {
+                    long startTime = System.nanoTime();
                     encontrarMelhorCaminhoProfundidade();
+                    long endTime = System.nanoTime();
+                    System.out.printf("\nTempo de execução (Profundidade): %.3f ms%n", (endTime - startTime) / 1e6);
                     break;
-                case 15:
+                }
+                case 7: {
+                    long startTime = System.nanoTime();
                     encontrarMelhorCaminhoLargura();
+                    long endTime = System.nanoTime();
+                    System.out.printf("\nTempo de execução (Largura): %.3f ms%n", (endTime - startTime) / 1e6);
                     break;
-                case 16:
+                }
+                case 8: {
+                    long startTime = System.nanoTime();
                     encontrarMelhorCaminhoFloyd();
+                    long endTime = System.nanoTime();
+                    System.out.printf("\nTempo de execução (Floyd): %.3f ms%n", (endTime - startTime) / 1e6);
                     break;
-                case 17:
-                    System.out.println("Este algoritmo não é compatível com o sistema utilizado pois para utilizar este algoritmo é necessário que o grafo seja direcionado e nosso sistema utiliza somente grafos não direcionados.");
+                }
+                case 9: {
+                    long startTime = System.nanoTime();
+                    System.out.println("Este algoritmo não é compatível com o sistema utilizado, pois é necessário que o grafo seja direcionado. Nosso sistema utiliza somente grafos não direcionados.");
+                    long endTime = System.nanoTime();
+                    System.out.printf("\nTempo de execução (Ford): %.3f ms%n", (endTime - startTime) / 1e6);
                     break;
-                case 18:
+                }
+                case 10:
                     limparGrafo();
                     running = false;
                     System.out.println("\nEncerrando...");
