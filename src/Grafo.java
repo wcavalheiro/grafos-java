@@ -349,4 +349,57 @@ class Grafo {
         return false;
     }
 
+    public static void algoritmoFloyd(int inicio, int destino, int fatorSegurancaAceitavel){
+}
+
+// abaixo é o algoritmo pra encontrar todos os caminhos
+    public void encontrarTodosOsCaminhosDijkstra(int inicio, int destino, int fatorSegurancaAceitavel) {
+        inicio -= 1;
+        destino -= 1;
+
+        List<List<Integer>> todosCaminhos = new ArrayList<>();
+        List<Integer> caminhoAtual = new ArrayList<>();
+
+        caminhoAtual.add(inicio);
+        dfs(inicio, destino, fatorSegurancaAceitavel, caminhoAtual, todosCaminhos);
+
+        if (todosCaminhos.isEmpty()) {
+            System.out.println("Não existem caminhos que atendam ao fator de segurança especificado.");
+        } else {
+            System.out.println("Todos os caminhos encontrados:");
+            for (List<Integer> caminho : todosCaminhos) {
+                System.out.println(formatarCaminho(caminho));
+            }
+        }
+    }
+
+    private void dfs(int atual, int destino, int fatorSegurancaAceitavel, List<Integer> caminhoAtual, List<List<Integer>> todosCaminhos) {
+        if (atual == destino) {
+            todosCaminhos.add(new ArrayList<>(caminhoAtual));
+            return;
+        }
+
+        for (int v = 0; v < numNodos; v++) {
+            if (matrizAdjacencia[atual][v] != 0 && !caminhoAtual.contains(v)) {
+                PontoDeSalto pontoV = pontosDeSalto.get(v);
+                if (pontoV.getFatorDeSeguranca() >= fatorSegurancaAceitavel) {
+                    caminhoAtual.add(v);
+                    dfs(v, destino, fatorSegurancaAceitavel, caminhoAtual, todosCaminhos);
+                    caminhoAtual.remove(caminhoAtual.size() - 1);
+                }
+            }
+        }
+    }
+
+    private String formatarCaminho(List<Integer> caminho) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < caminho.size(); i++) {
+            sb.append(caminho.get(i) + 1);
+            if (i < caminho.size() - 1) {
+                sb.append(" -> ");
+            }
+        }
+        return sb.toString();
+    }
+
 }

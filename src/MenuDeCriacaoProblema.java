@@ -1,3 +1,5 @@
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
 import problema.Caminho;
 import problema.PontoDeSalto;
 
@@ -36,12 +38,15 @@ public class MenuDeCriacaoProblema {
             System.out.println("7. Remover Caminho");
             System.out.println("8. Visualizar Pontos de Salto");
             System.out.println("9. Visualizar Caminhos");
-            System.out.println("10. Visualizar Dados do Mapa (Grafo)");
-            System.out.println("11. Visualizar Melhor Caminho (Mais rápido e Mais Seguro™)");
+            System.out.println("10. Visualizar Informações do Mapa");
+            System.out.println("11. Visualizar Caminho por Dijkstra (Mais rápido e Mais Seguro™)");
             System.out.println("12. Limpar Rota");
-            System.out.println("13. Ver o Mapa");
-            System.out.println("14. Visualizar melhor caminho por largura");
-            System.out.println("15. Sair");
+            System.out.println("13. Ver o desenho do Mapa");
+            System.out.println("14. Visualizar melhor caminho por Profundidade");
+            System.out.println("15. Visualizar melhor caminho por Largura");
+            System.out.println("16. Visualizar melhor caminho por Floyd");
+            System.out.println("17. Visualizar melhor caminho por Ford");
+            System.out.println("18. Sair");
 
             System.out.print("\nEscolha uma opção: ");
             int opcao = sc.nextInt();
@@ -94,9 +99,18 @@ public class MenuDeCriacaoProblema {
                     visualizarMapa();
                     break;
                 case 14:
-                    encontrarMelhorCaminhoLargura();
+                    encontrarMelhorCaminhoProfundidade();
                     break;
                 case 15:
+                    encontrarMelhorCaminhoLargura();
+                    break;
+                case 16:
+                    encontrarMelhorCaminhoFloyd();
+                    break;
+                case 17:
+                    System.out.println("Este algoritmo não é compatível com o sistema utilizado pois para utilizar este algoritmo é necessário que o grafo seja direcionado e nosso sistema utiliza somente grafos não direcionados.");
+                    break;
+                case 18:
                     limparGrafo();
                     running = false;
                     System.out.println("\nEncerrando...");
@@ -105,9 +119,6 @@ public class MenuDeCriacaoProblema {
                     System.out.println(ANSI_RED + "\nOpção inválida." + ANSI_RESET);
             }
         }
-    }
-
-    private static void visualizarMapa() {
     }
 
 
@@ -380,7 +391,52 @@ public class MenuDeCriacaoProblema {
             }
             System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + "\n" + "Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET + "\n");
 
-            grafo.algoritmoDijkstra(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
+            grafo.encontrarTodosOsCaminhosDijkstra(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
+            System.out.println("\n");
+            break;
+        }
+    }
+
+    private static void encontrarMelhorCaminhoProfundidade(){
+        while (true) {
+            sc.nextLine(); //Limpeza do Buffer
+            System.out.print("Digite o caminho [Ponto de Partida-Ponto de Chegada]: ");
+            String caminho = sc.nextLine();
+
+            System.out.print("Fator de segurança aceitável [Somente números 0 a 100]:  ");
+            String fatorSeguranca = sc.nextLine();
+
+            String[] partes = caminho.split("-", 2);
+            if (partes.length != 2) {
+                System.out.println(ANSI_RED + "\nFormato inválido! Use o formato Ponto Inicial - Ponto Final.\n" + ANSI_RESET);
+                continue;
+            }
+
+            int pontoDePartida = 0;
+            int pontoDeChegada = 0;
+            int fatorDeSegurancaInt = 0;
+
+            try {
+                pontoDePartida = Integer.parseInt(partes[0].trim());
+                pontoDeChegada = Integer.parseInt(partes[1].trim());
+
+                if (!pontosDeSaltoMap.containsKey(pontoDePartida) || !pontosDeSaltoMap.containsKey(pontoDeChegada)) {
+                    System.out.println(ANSI_RED + "\nUm ou ambos os Pontos de Salto não existem.\n" + ANSI_RESET);
+                    break;
+                }
+
+                fatorDeSegurancaInt = Integer.parseInt(fatorSeguranca);
+
+                if(fatorDeSegurancaInt <= 0 || fatorDeSegurancaInt > 100){
+                    System.out.println(ANSI_RED + "\nO fator de segurança deve estar entre 0 e 100%.\n" + ANSI_RESET);
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(MENSAGEM_FORMATO_INVALIDO_DOUBLE);
+            }
+            System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + "\n" + "Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET + "\n");
+
+            grafo.algoritmoBF(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
             System.out.println("\n");
             break;
         }
@@ -430,6 +486,50 @@ public class MenuDeCriacaoProblema {
             break;
         }
     }
+    private static void encontrarMelhorCaminhoFloyd(){
+        while (true) {
+            sc.nextLine(); //Limpeza do Buffer
+            System.out.print("Digite o caminho [Ponto de Partida-Ponto de Chegada]: ");
+            String caminho = sc.nextLine();
+
+            System.out.print("Fator de segurança aceitável [Somente números 0 a 100]:  ");
+            String fatorSeguranca = sc.nextLine();
+
+            String[] partes = caminho.split("-", 2);
+            if (partes.length != 2) {
+                System.out.println(ANSI_RED + "\nFormato inválido! Use o formato Ponto Inicial - Ponto Final.\n" + ANSI_RESET);
+                continue;
+            }
+
+            int pontoDePartida = 0;
+            int pontoDeChegada = 0;
+            int fatorDeSegurancaInt = 0;
+
+            try {
+                pontoDePartida = Integer.parseInt(partes[0].trim());
+                pontoDeChegada = Integer.parseInt(partes[1].trim());
+
+                if (!pontosDeSaltoMap.containsKey(pontoDePartida) || !pontosDeSaltoMap.containsKey(pontoDeChegada)) {
+                    System.out.println(ANSI_RED + "\nUm ou ambos os Pontos de Salto não existem.\n" + ANSI_RESET);
+                    break;
+                }
+
+                fatorDeSegurancaInt = Integer.parseInt(fatorSeguranca);
+
+                if(fatorDeSegurancaInt <= 0 || fatorDeSegurancaInt > 100){
+                    System.out.println(ANSI_RED + "\nO fator de segurança deve estar entre 0 e 100%.\n" + ANSI_RESET);
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(MENSAGEM_FORMATO_INVALIDO_DOUBLE);
+            }
+            System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + "\n" + "Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET + "\n");
+
+            grafo.algoritmoFloyd(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
+            System.out.println("\n");
+            break;
+        }
+    }
 
     public static void limparGrafo() {
         pontosDeSaltoMap.clear();
@@ -439,7 +539,6 @@ public class MenuDeCriacaoProblema {
         grafo.setPontosDeSalto(pontoDeSaltosVazio);
         indexNodos = 1;
         indexMapCaminhos = 1;
-
     }
 
     public static void visualizarDadosDoGrafo(){
@@ -471,5 +570,25 @@ public class MenuDeCriacaoProblema {
             }
             return caminhoArquivo;
         }
+    }
+    private static void visualizarMapa() {
+        System.setProperty("org.graphstream.ui", "swing");
+
+        Graph graph = new SingleGraph("Grafo Lido");
+
+        for (Map.Entry<Integer, PontoDeSalto> entry : pontosDeSaltoMap.entrySet()) {
+            int id = entry.getKey();
+            PontoDeSalto ponto = entry.getValue();
+            graph.addNode(String.valueOf(id)).setAttribute("ui.label", ponto.getNome());
+        }
+
+        for (int i = 1; i < indexMapCaminhos; i++) {
+            Caminho caminho = caminhosMap.get(i);
+            graph.addEdge(caminho.getPontoInicial() + "-" + caminho.getPontoFinal(),
+                            String.valueOf(caminho.getPontoInicial()),
+                            String.valueOf(caminho.getPontoFinal()))
+                    .setAttribute("ui.label", String.valueOf(caminho.getParsec()));
+        }
+        graph.display();
     }
 }

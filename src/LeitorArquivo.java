@@ -66,33 +66,7 @@ public class LeitorArquivo {
             System.out.println("Erro no formato do arquivo: " + e.getMessage());
         }
 
-        // Chama o método para visualizar o grafo após a leitura do arquivo
-        visualizarGrafo();
-
         return grafo;
-    }
-
-    private static void visualizarGrafo() {
-        System.setProperty("org.graphstream.ui", "swing");
-
-        Graph graph = new SingleGraph("Grafo Lido");
-
-        // Adicionar nós
-        for (Map.Entry<Integer, PontoDeSalto> entry : pontosDeSaltoMap.entrySet()) {
-            int id = entry.getKey();
-            PontoDeSalto ponto = entry.getValue();
-            graph.addNode(String.valueOf(id)).setAttribute("ui.label", ponto.getNome());
-        }
-
-        // Adicionar arestas
-        for (int i = 1; i < indexMapCaminhos; i++) {
-            Caminho caminho = caminhosMap.get(i);
-            graph.addEdge(caminho.getPontoInicial() + "-" + caminho.getPontoFinal(),
-                            String.valueOf(caminho.getPontoInicial()),
-                            String.valueOf(caminho.getPontoFinal()))
-                    .setAttribute("ui.label", String.valueOf(caminho.getParsec()));
-        }
-        graph.display();
     }
 
     public static Map<Integer, PontoDeSalto> getPontosDeSaltoMap() {
