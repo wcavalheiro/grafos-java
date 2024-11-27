@@ -64,24 +64,15 @@ public class MenuDeCriacaoProblema {
                     visualizarMapa();
                     break;
                 case 5: {
-                    long startTime = System.nanoTime();
                     encontrarMelhorCaminho();
-                    long endTime = System.nanoTime();
-                    System.out.printf("\nTempo de execução (Dijkstra): %.3f ms%n", (endTime - startTime) / 1e6);
                     break;
                 }
                 case 6: {
-                    long startTime = System.nanoTime();
                     encontrarMelhorCaminhoProfundidade();
-                    long endTime = System.nanoTime();
-                    System.out.printf("\nTempo de execução (Profundidade): %.3f ms%n", (endTime - startTime) / 1e6);
                     break;
                 }
                 case 7: {
-                    long startTime = System.nanoTime();
                     encontrarMelhorCaminhoLargura();
-                    long endTime = System.nanoTime();
-                    System.out.printf("\nTempo de execução (Largura): %.3f ms%n", (endTime - startTime) / 1e6);
                     break;
                 }
                 case 8: {
@@ -378,8 +369,10 @@ public class MenuDeCriacaoProblema {
                 System.out.println(MENSAGEM_FORMATO_INVALIDO_DOUBLE);
             }
             System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + "\n" + "Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET + "\n");
-
+            long startTime = System.nanoTime();
             grafo.algoritmoDijkstra(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
+            long endTime = System.nanoTime();
+            System.out.printf("\nTempo de execução (Dijkstra): %.3f ms%n", (endTime - startTime) / 1e6);
             System.out.println("\n");
             break;
         }
@@ -423,8 +416,10 @@ public class MenuDeCriacaoProblema {
                 System.out.println(MENSAGEM_FORMATO_INVALIDO_DOUBLE);
             }
             System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + "\n" + "Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET + "\n");
-
+            long startTime = System.nanoTime();
             grafo.algoritmoBF(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
+            long endTime = System.nanoTime();
+            System.out.printf("\nTempo de execução (Profundidade): %.3f ms%n", (endTime - startTime) / 1e6);
             System.out.println("\n");
             break;
         }
@@ -469,7 +464,10 @@ public class MenuDeCriacaoProblema {
             }
             System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + "\n" + "Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET + "\n");
 
+            long startTime = System.nanoTime();
             grafo.algoritmoBFS(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
+            long endTime = System.nanoTime();
+            System.out.printf("\nTempo de execução (Largura): %.3f ms%n", (endTime - startTime) / 1e6);
             System.out.println("\n");
             break;
         }
@@ -513,9 +511,6 @@ public class MenuDeCriacaoProblema {
             }
             System.out.println(ANSI_BLUE + "\nPonto de Partida: [" + pontoDePartida + "] " + pontosDeSaltoMap.get(pontoDePartida).getNome() + "\n" + "Ponto de Chegada: [" + pontoDeChegada + "] " + pontosDeSaltoMap.get(pontoDeChegada).getNome() + ANSI_RESET + "\n");
 
-            grafo.algoritmoFloyd(pontoDePartida, pontoDeChegada, fatorDeSegurancaInt);
-            System.out.println("\n");
-            break;
         }
     }
 

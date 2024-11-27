@@ -349,10 +349,73 @@ class Grafo {
         return false;
     }
 
-    public static void algoritmoFloyd(int inicio, int destino, int fatorSegurancaAceitavel){
-}
+    public void algoritmoFloyd(int inicio, int destino, int fatorSegurancaAceitavel) {
+        // Criação da matriz de distâncias
+        int[][] dist = new int[numNodos][numNodos];
+        int[][] predecessor = new int[numNodos][numNodos];
 
-// abaixo é o algoritmo pra encontrar todos os caminhos
+        // Inicializando a matriz de distâncias e predecessores
+        for (int i = 0; i < numNodos; i++) {
+            for (int j = 0; j < numNodos; j++) {
+                if (i == j) {
+                    dist[i][j] = 0;
+                    predecessor[i][j] = -1; // Nenhum predecessor
+                } else if (matrizAdjacencia[i][j] != 0) {
+                    dist[i][j] = matrizAdjacencia[i][j];
+                    predecessor[i][j] = i;
+                } else {
+                    dist[i][j] = Integer.MAX_VALUE; // Sem conexão
+                    predecessor[i][j] = -1;
+                }
+            }
+        }
+
+        // Executando o algoritmo de Floyd-Warshall
+        for (int k = 0; k < numNodos; k++) {
+            for (int i = 0; i < numNodos; i++) {
+                for (int j = 0; j < numNodos; j++) {
+                    if (dist[i][k] != Integer.MAX_VALUE && dist[k][j] != Integer.MAX_VALUE) {
+                        int novaDistancia = dist[i][k] + dist[k][j];
+                        if (novaDistancia < dist[i][j]) {
+                            dist[i][j] = novaDistancia;
+                            predecessor[i][j] = predecessor[k][j];
+                        }
+                    }
+                }
+            }
+        }
+
+        // Verificando se existe um caminho entre início e destino
+        if (dist[inicio][destino] == Integer.MAX_VALUE) {
+            System.out.println("Não há caminho entre os nós " + inicio + " e " + destino);
+            return;
+        }
+
+        // Verificando o fator de segurança aceitável
+        if (dist[inicio][destino] > fatorSegurancaAceitavel) {
+            System.out.println("O caminho entre os nós " + inicio + " e " + destino +
+                    " não atende ao fator de segurança aceitável (" + fatorSegurancaAceitavel + ").");
+            return;
+        }
+
+        // Exibindo o caminho seguro
+        System.out.println("Caminho seguro encontrado entre os nós " + inicio + " e " + destino +
+                " com peso total " + dist[inicio][destino] + ":");
+        imprimirCaminho(predecessor, inicio, destino);
+    }
+
+    private void imprimirCaminho(int[][] predecessor, int inicio, int destino) {
+        if (inicio == destino) {
+            System.out.print(inicio + " ");
+        } else if (predecessor[inicio][destino] == -1) {
+            System.out.println("Não há caminho entre " + inicio + " e " + destino);
+        } else {
+            imprimirCaminho(predecessor, inicio, predecessor[inicio][destino]);
+            System.out.print(destino + " ");
+        }
+    }
+
+    // abaixo é o algoritmo pra encontrar todos os caminhos
     public void encontrarTodosOsCaminhosDijkstra(int inicio, int destino, int fatorSegurancaAceitavel) {
         inicio -= 1;
         destino -= 1;
@@ -402,4 +465,64 @@ class Grafo {
         return sb.toString();
     }
 
+
+    // Implementação do Algoritmo de Bellman-Ford
+    public boolean bellmanFord(int origem, int destino, int fatorSegurancaAceitavel, List<Integer> caminho) {
+        int numNodos = pontosDeSalto.size();
+        int[] dist = new int[numNodos];
+        int[] predecessor = new int[numNodos];
+
+
+        for (int i = 0; i < numNodos; i++) {
+            dist[i] = Integer.MAX_VALUE;
+            predecessor[i] = -1;
+        }
+        dist[origem] = 0;
+
+
+        for (int i = 0; i < numNodos - 1; i++) {
+            for (int u = 0; u < numNodos; u++) {
+                for (int v = 0; v < numNodos; v++) {
+                    if (matrizAdjacencia[u][v] != 0) {
+                        PontoDeSalto pontoV = pontosDeSalto.get(v);
+                        if (pontoV.getFatorDeSeguranca() >= fatorSegurancaAceitavel) {
+                            int peso = matrizAdjacencia[u][v];
+                            if (dist[u] != Integer.MAX_VALUE && dist[u] + peso < dist[v]) {
+                                dist[v] = dist[u] + peso;
+                                predecessor[v] = u;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        for (int u = 0; u < numNodos; u++) {
+            for (int v = 0; v < numNodos; v++) {
+                if (matrizAdjacencia[u][v] != 0) {
+                    int peso = matrizAdjacencia[u][v];
+                    if (dist[u] != Integer.MAX_VALUE && dist[u] + peso < dist[v]) {
+                        System.out.println("O grafo contém um ciclo negativo.");
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // Construir o caminho do origem ao destino
+        if (dist[destino] == Integer.MAX_VALUE) {
+            System.out.println("Não há caminho disponível do origem ao destino.");
+            return false;
+        }
+
+        // Reconstruir o caminho do destino para a origem usando o array predecessor
+        caminho.clear();
+        int passoAtual = destino;
+        while (passoAtual != -1) {
+            caminho.add(0, passoAtual); // Adiciona ao início da lista para reconstruir o caminho
+            passoAtual = predecessor[passoAtual];
+        }
+        return true;
+    }
 }
